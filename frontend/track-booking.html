@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Booking - Service Point</title>
+    <meta name="description" content="Track your vehicle service booking status and get real-time updates.">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .track-booking {
+            min-height: 100vh;
+            padding: 80px 0 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .track-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .track-header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+        
+        .track-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .track-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .track-form {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f9fafb;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .track-btn {
+            width: 100%;
+            padding: 16px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .track-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .track-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .booking-result {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        
+        .booking-found {
+            display: block;
+        }
+        
+        .booking-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f3f4f6;
+        }
+        
+        .booking-id {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .booking-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .status-pending {
+            background: #fef3cd;
+            color: #92400e;
+        }
+        
+        .status-confirmed {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .status-in-progress {
+            background: #fde68a;
+            color: #d97706;
+        }
+        
+        .status-completed {
+            background: #d1fae5;
+            color: #047857;
+        }
+        
+        .status-cancelled {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+        
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .detail-group {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .detail-group h4 {
+            margin: 0 0 15px 0;
+            color: #374151;
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-info {
+            color: #6b7280;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .progress-tracker {
+            margin-top: 30px;
+        }
+        
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+        }
+        
+        .progress-line-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: width 0.8s ease;
+        }
+        
+        .progress-step {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+        }
+        
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .step-circle.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .step-circle.completed {
+            background: #10b981;
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-align: center;
+            max-width: 80px;
+        }
+        
+        .step-label.active {
+            color: #667eea;
+        }
+        
+        .step-label.completed {
+            color: #10b981;
+        }
+        
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .back-home {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .back-home a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-home a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .track-header h1 {
+                font-size: 2rem;
+            }
+            
+            .track-form, .booking-result {
+                padding: 25px;
+            }
+            
+            .booking-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .booking-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-steps {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            
+            .progress-line {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-car-side"></i>
+                <span>Service Point</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="index.html#services" class="nav-link">Services</a>
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+                <a href="track-booking.html" class="nav-link active">Track Booking</a>
+            </div>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Track Booking Section -->
+    <section class="track-booking">
+        <div class="track-container">
+            <div class="track-header">
+                <h1><i class="fas fa-search-location"></i> Track Your Booking</h1>
+                <p>Enter your booking ID to get real-time updates on your service request</p>
+            </div>
+
+            <!-- Booking Search Form -->
+            <div class="track-form">
+                <form id="trackingForm">
+                    <div class="form-group">
+                        <label for="bookingId">Booking ID</label>
+                        <input 
+                            type="text" 
+                            id="bookingId" 
+                            class="form-input" 
+                            placeholder="Enter your booking ID (e.g., BK_1758350657657_26G9RRAEV)"
+                            required
+                        >
+                    </div>
+                    <button type="submit" class="track-btn" id="trackBtn">
+                        <i class="fas fa-search"></i>
+                        <span>Track Booking</span>
+                    </button>
+                </form>
+                
+                <div id="errorMessage" class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Booking not found. Please check your booking ID and try again.</p>
+                </div>
+            </div>
+
+            <!-- Booking Result -->
+            <div id="bookingResult" class="booking-result">
+                <div class="booking-header">
+                    <div class="booking-id">
+                        <i class="fas fa-receipt"></i>
+                        <span id="displayBookingId">BK_1758350657657_26G9RRAEV</span>
+                    </div>
+                    <div id="bookingStatus" class="booking-status status-confirmed">
+                        Confirmed
+                    </div>
+                </div>
+
+                <div class="booking-details">
+                    <div class="detail-group">
+                        <h4><i class="fas fa-wrench"></i> Service Details</h4>
+                        <div class="detail-info">
+                            <strong>Service:</strong> <span id="serviceType">Engine Repair</span><br>
+                            <strong>Vehicle:</strong> <span id="vehicleInfo">Honda City - MH12AB1234</span><br>
+                            <strong>Date & Time:</strong> <span id="bookingDateTime">Sept 20, 2025 - 10:00 AM</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-group">
+                        <h4><i class="fas fa-map-marker-alt"></i> Garage Details</h4>
+                        <div class="detail-info">
+                            <strong>Garage:</strong> <span id="garageName">AutoCare Plus</span><br>
+                            <strong>Address:</strong> <span id="garageAddress">123 Main Street, Mumbai</span><br>
+                            <strong>Contact:</strong> <span id="garageContact">+91 98765 43210</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-group">
+                        <h4><i class="fas fa-rupee-sign"></i> Payment Details</h4>
+                        <div class="detail-info">
+                            <strong>Amount:</strong> ₹<span id="bookingAmount">2,500</span><br>
+                            <strong>Payment Status:</strong> <span id="paymentStatus">Pending</span><br>
+                            <strong>Payment Method:</strong> <span id="paymentMethod">Cash on Service</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-group">
+                        <h4><i class="fas fa-user"></i> Customer Details</h4>
+                        <div class="detail-info">
+                            <strong>Name:</strong> <span id="customerName">John Doe</span><br>
+                            <strong>Phone:</strong> <span id="customerPhone">+91 98765 43210</span><br>
+                            <strong>Email:</strong> <span id="customerEmail">john@example.com</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress Tracker -->
+                <div class="progress-tracker">
+                    <h4 style="margin-bottom: 20px; color: #374151;">
+                        <i class="fas fa-tasks"></i> Service Progress
+                    </h4>
+                    <div class="progress-steps">
+                        <div class="progress-line">
+                            <div class="progress-line-fill" id="progressFill" style="width: 50%;"></div>
+                        </div>
+                        
+                        <div class="progress-step">
+                            <div class="step-circle completed">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="step-label completed">Booking Confirmed</div>
+                        </div>
+                        
+                        <div class="progress-step">
+                            <div class="step-circle active">
+                                <i class="fas fa-wrench"></i>
+                            </div>
+                            <div class="step-label active">In Progress</div>
+                        </div>
+                        
+                        <div class="progress-step">
+                            <div class="step-circle">
+                                <i class="fas fa-check-double"></i>
+                            </div>
+                            <div class="step-label">Quality Check</div>
+                        </div>
+                        
+                        <div class="progress-step">
+                            <div class="step-circle">
+                                <i class="fas fa-car"></i>
+                            </div>
+                            <div class="step-label">Ready for Pickup</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="back-home">
+                <a href="index.html">
+                    <i class="fas fa-home"></i>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Booking tracking functionality
+        class BookingTracker {
+            constructor() {
+                this.apiBaseUrl = '/api';
+                this.initializeElements();
+                this.setupEventListeners();
+                this.checkURLParams();
+            }
+
+            initializeElements() {
+                this.trackingForm = document.getElementById('trackingForm');
+                this.bookingIdInput = document.getElementById('bookingId');
+                this.trackBtn = document.getElementById('trackBtn');
+                this.errorMessage = document.getElementById('errorMessage');
+                this.bookingResult = document.getElementById('bookingResult');
+            }
+
+            setupEventListeners() {
+                this.trackingForm.addEventListener('submit', (e) => this.handleTrackingSubmit(e));
+            }
+
+            checkURLParams() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const bookingId = urlParams.get('bookingId');
+                if (bookingId) {
+                    this.bookingIdInput.value = bookingId;
+                    this.trackBooking(bookingId);
+                }
+            }
+
+            async handleTrackingSubmit(e) {
+                e.preventDefault();
+                const bookingId = this.bookingIdInput.value.trim();
+                
+                if (!bookingId) {
+                    this.showError('Please enter a booking ID');
+                    return;
+                }
+
+                await this.trackBooking(bookingId);
+            }
+
+            async trackBooking(bookingId) {
+                this.setLoading(true);
+                this.hideError();
+                this.hideResult();
+
+                try {
+            // Use actual API call
+            const response = await this.fetchBookingFromAPI(bookingId);
+                    
+                    if (response.success) {
+                        this.displayBookingDetails(response.data);
+                    } else {
+                        this.showError('Booking not found. Please check your booking ID and try again.');
+                    }
+                } catch (error) {
+                    console.error('Error tracking booking:', error);
+                    this.showError('Error occurred while tracking booking. Please try again.');
+                } finally {
+                    this.setLoading(false);
+                }
+            }
+
+            // Fetch booking from real API
+            async fetchBookingFromAPI(bookingId) {
+                try {
+                    const response = await fetch(`${this.apiBaseUrl}/booking/track/${bookingId}`);
+                    const data = await response.json();
+                    
+                    if (response.ok && data.success) {
+                        // Transform API data to match frontend expectations
+                        const booking = data.data;
+                        const garage = booking.garage || {};
+                        
+                        return {
+                            success: true,
+                            data: {
+                                bookingId: booking.bookingId,
+                                status: booking.status,
+                                serviceType: booking.service || booking.serviceType,
+                                vehicleInfo: booking.vehicleInfo || 'Vehicle Info Not Available',
+                                bookingDateTime: this.formatDateTime(booking.scheduledDate, booking.scheduledTime),
+                                garageName: garage.name || 'Assigned Garage',
+                                garageAddress: garage.location ? 
+                                    `${garage.location.address || ''}, ${garage.location.city}, ${garage.location.state}`.replace(/^, /, '') :
+                                    'Address not available',
+                                garageContact: garage.mobile || 'Contact via platform',
+                                bookingAmount: booking.actualCost || booking.estimatedCost || 'TBD',
+                                paymentStatus: booking.paymentStatus || 'Pending',
+                                paymentMethod: booking.paymentMethod || 'To be decided',
+                                customerName: booking.userName || booking.customerName,
+                                customerPhone: booking.userPhone || booking.phoneNumber,
+                                customerEmail: booking.userEmail || booking.email,
+                                progress: this.getProgressPercentage(booking.status)
+                            }
+                        };
+                    } else {
+                        return {
+                            success: false,
+                            message: data.message || 'Booking not found'
+                        };
+                    }
+                } catch (error) {
+                    console.error('API Error:', error);
+                    return {
+                        success: false,
+                        message: 'Error connecting to server. Please try again.'
+                    };
+                }
+            }
+            
+            formatDateTime(date, time) {
+                try {
+                    const bookingDate = new Date(date);
+                    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                    const formattedDate = bookingDate.toLocaleDateString('en-US', options);
+                    return `${formattedDate} - ${time}`;
+                } catch (error) {
+                    return 'Date TBD';
+                }
+            }
+            
+            getProgressPercentage(status) {
+                const progressMap = {
+                    'pending': 25,
+                    'confirmed': 50,
+                    'in_progress': 75,
+                    'completed': 100,
+                    'cancelled': 0
+                };
+                return progressMap[status] || 25;
+            }
+
+            displayBookingDetails(booking) {
+                // Update booking details
+                document.getElementById('displayBookingId').textContent = booking.bookingId;
+                document.getElementById('serviceType').textContent = booking.serviceType;
+                document.getElementById('vehicleInfo').textContent = booking.vehicleInfo;
+                document.getElementById('bookingDateTime').textContent = booking.bookingDateTime;
+                document.getElementById('garageName').textContent = booking.garageName;
+                document.getElementById('garageAddress').textContent = booking.garageAddress;
+                document.getElementById('garageContact').textContent = booking.garageContact;
+                document.getElementById('bookingAmount').textContent = booking.bookingAmount;
+                document.getElementById('paymentStatus').textContent = booking.paymentStatus;
+                document.getElementById('paymentMethod').textContent = booking.paymentMethod;
+                document.getElementById('customerName').textContent = booking.customerName;
+                document.getElementById('customerPhone').textContent = booking.customerPhone;
+                document.getElementById('customerEmail').textContent = booking.customerEmail;
+
+                // Update status
+                const statusElement = document.getElementById('bookingStatus');
+                statusElement.textContent = booking.status.charAt(0).toUpperCase() + booking.status.slice(1);
+                statusElement.className = `booking-status status-${booking.status}`;
+
+                // Update progress
+                this.updateProgress(booking.progress);
+
+                // Show result
+                this.showResult();
+            }
+
+            updateProgress(percentage) {
+                const progressFill = document.getElementById('progressFill');
+                progressFill.style.width = percentage + '%';
+            }
+
+            setLoading(loading) {
+                this.trackBtn.disabled = loading;
+                const btnText = this.trackBtn.querySelector('span');
+                const btnIcon = this.trackBtn.querySelector('i');
+
+                if (loading) {
+                    btnText.textContent = 'Tracking...';
+                    btnIcon.className = 'fas fa-spinner fa-spin';
+                } else {
+                    btnText.textContent = 'Track Booking';
+                    btnIcon.className = 'fas fa-search';
+                }
+            }
+
+            showError(message) {
+                this.errorMessage.querySelector('p').textContent = message;
+                this.errorMessage.classList.add('show');
+            }
+
+            hideError() {
+                this.errorMessage.classList.remove('show');
+            }
+
+            showResult() {
+                this.bookingResult.classList.add('booking-found');
+            }
+
+            hideResult() {
+                this.bookingResult.classList.remove('booking-found');
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            new BookingTracker();
+        });
+
+        // Navbar toggle functionality
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            const icon = navToggle.querySelector('i');
+            icon.className = navMenu.classList.contains('active') 
+                ? 'fas fa-times' 
+                : 'fas fa-bars';
+        });
+    </script>
+</body>
+</html>

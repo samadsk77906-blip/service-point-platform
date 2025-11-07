@@ -1,0 +1,491 @@
+/* Enhanced Location Search Styles */
+
+/* GPS Button Styles */
+.btn-gps {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+}
+
+.btn-gps:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-gps:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 2px 8px rgba(108, 117, 125, 0.2);
+}
+
+.btn-gps.loading {
+    background: #17a2b8;
+    cursor: wait;
+}
+
+.btn-gps.success {
+    background: linear-gradient(135deg, #28a745 0%, #34ce57 100%);
+}
+
+/* Enhanced Filter Styles */
+.filter-group {
+    position: relative;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.filter-select {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 2px solid #e1e5e9;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #333;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.825L1.175 4 2.35 2.825 6 6.475 9.65 2.825 10.825 4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 12px;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.filter-select:disabled {
+    background-color: #f8f9fa;
+    color: #999;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Enhanced Garage Cards */
+.garage-card {
+    background: white;
+    border: 2px solid #e1e5e9;
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.garage-card:hover {
+    border-color: #667eea;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.garage-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.garage-card:hover::before {
+    transform: scaleX(1);
+}
+
+.garage-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.garage-name {
+    color: #333;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    flex: 1;
+}
+
+.garage-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.garage-rating .fas.fa-star,
+.garage-rating .fas.fa-star-half-alt {
+    color: #ffc107;
+    font-size: 14px;
+}
+
+.garage-rating .far.fa-star {
+    color: #e9ecef;
+    font-size: 14px;
+}
+
+.rating-text {
+    font-size: 12px;
+    color: #666;
+    font-weight: 500;
+}
+
+.garage-details {
+    margin-bottom: 20px;
+}
+
+.garage-details p {
+    margin: 0 0 10px 0;
+    color: #555;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.garage-details i {
+    width: 16px;
+    color: #667eea;
+    font-size: 14px;
+}
+
+.garage-distance {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 8px;
+}
+
+.garage-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.garage-actions .btn {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.garage-actions .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.garage-actions .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.garage-actions .btn-secondary {
+    background: #f8f9fa;
+    color: #333;
+    border: 2px solid #e1e5e9;
+}
+
+.garage-actions .btn-secondary:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+}
+
+/* Loading States */
+.loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(4px);
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Message Notifications */
+.alert {
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.alert-success {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.alert-success::before {
+    background: #28a745;
+}
+
+.alert-error {
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.alert-error::before {
+    background: #dc3545;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    color: #856404;
+}
+
+.alert-warning::before {
+    background: #ffc107;
+}
+
+.alert-info {
+    background: #d1ecf1;
+    border: 1px solid #bee5eb;
+    color: #0c5460;
+}
+
+.alert-info::before {
+    background: #17a2b8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .filter-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .garage-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .garage-actions {
+        flex-direction: column;
+    }
+    
+    .garage-card {
+        padding: 20px;
+    }
+    
+    .btn-gps {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-select {
+        font-size: 14px;
+        padding: 10px 35px 10px 12px;
+    }
+    
+    .garage-name {
+        font-size: 18px;
+    }
+    
+    .garage-card {
+        padding: 16px;
+    }
+    
+    .btn-gps {
+        padding: 14px 20px;
+        font-size: 14px;
+    }
+}
+
+/* Animation Enhancements */
+.garage-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.garage-card:nth-child(even) {
+    animation-delay: 0.1s;
+}
+
+.garage-card:nth-child(3n) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Filter Actions Enhancement */
+.filter-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .filter-actions {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .filter-actions .btn {
+        width: 100%;
+    }
+}
+
+/* Search Results Header */
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #f1f3f4;
+}
+
+.results-header h3 {
+    color: #333;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Enhanced No Results State */
+.no-results {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.no-results i {
+    font-size: 64px;
+    color: #e9ecef;
+    margin-bottom: 20px;
+}
+
+.no-results h3 {
+    color: #333;
+    margin-bottom: 12px;
+    font-size: 24px;
+}
+
+.no-results p {
+    color: #666;
+    font-size: 16px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Hidden utility class */
+.hidden {
+    display: none !important;
+}
+
+/* Focus improvements for accessibility */
+.filter-select:focus,
+.btn:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Hover effects for interactive elements */
+.filter-select:not(:disabled):hover {
+    border-color: #667eea;
+}
+
+/* Enhanced dropdown animations */
+.filter-select {
+    transition: all 0.2s ease;
+}
+
+.filter-select:not(:disabled) {
+    cursor: pointer;
+}
+
+/* GPS button icon animations */
+.btn-gps .fa-spinner {
+    animation: spin 1s linear infinite;
+}
+
+.btn-gps .fa-check {
+    animation: checkmark 0.6s ease-in-out;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

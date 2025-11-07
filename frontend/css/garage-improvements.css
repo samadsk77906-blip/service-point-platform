@@ -1,0 +1,113 @@
+/* Enhanced Garage Card Styling */
+.garage-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.garage-actions .btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+/* Directions button styling */
+.garage-actions .btn-outline {
+    background: #ffffff;
+    border: 2px solid #28a745;
+    color: #28a745;
+}
+
+.garage-actions .btn-outline:hover {
+    background: #28a745;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+/* Book Service button styling */
+.garage-actions .btn-primary {
+    background: #007bff;
+    border: 2px solid #007bff;
+    color: #ffffff;
+}
+
+.garage-actions .btn-primary:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Icon improvements */
+.garage-actions .fas {
+    font-size: 14px;
+}
+
+/* Garage card enhancements */
+.garage-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.garage-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Service tags improvements */
+.service-tag {
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
+}
+
+.service-tag:hover {
+    background: linear-gradient(45deg, #e9ecef, #dee2e6);
+    transform: scale(1.05);
+}
+
+/* Rating improvements */
+.garage-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stars {
+    color: #ffc107;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+/* Location info improvements */
+.garage-info p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+}
+
+.garage-info .fas {
+    color: #6c757d;
+    width: 16px;
+    text-align: center;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .garage-actions {
+        flex-direction: column;
+    }
+    
+    .garage-actions .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+}

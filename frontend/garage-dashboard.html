@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage Dashboard - Service Point</title>
+    
+    <!-- Prevent caching for security -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-auth">
+        <div class="dashboard-logo">
+            <i class="fas fa-warehouse"></i>
+            <span>Service Point - Garage</span>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" id="user-avatar">G</div>
+            <div class="user-details">
+                <div class="user-name" id="user-name">Loading...</div>
+                <div class="user-role" id="garage-id">Garage</div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-services">0</h3>
+                        <p>Total Services</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-bookings">0</h3>
+                        <p>Total Bookings</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="pending-bookings">0</h3>
+                        <p>Pending</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="completed-bookings">0</h3>
+                        <p>Completed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Service Management Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Service Management</h2>
+                    <button class="btn btn-primary" onclick="toggleAddServiceForm()">
+                        <i class="fas fa-plus"></i> Add Service
+                    </button>
+                </div>
+
+                <!-- Add Service Form -->
+                <div id="add-service-form" class="form-container hidden">
+                    <form id="service-form" class="garage-form">
+                        <div class="form-grid two-columns">
+                            <div class="form-group">
+                                <label for="serviceName">
+                                    <i class="fas fa-tools"></i>
+                                    Service Name
+                                </label>
+                                <input type="text" id="serviceName" name="serviceName" required placeholder="e.g., Oil Change">
+                                <small class="error-message" id="serviceName-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category">
+                                    <i class="fas fa-tags"></i>
+                                    Category
+                                </label>
+                                <select id="category" name="category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="Towing">Towing</option>
+                                    <option value="Oil Change">Oil Change</option>
+                                    <option value="Battery Change">Battery Change</option>
+                                    <option value="Servicing">Servicing</option>
+                                    <option value="Inspection">Inspection</option>
+                                    <option value="Tire Repair">Tire Repair</option>
+                                    <option value="Engine Repair">Engine Repair</option>
+                                    <option value="Brake Service">Brake Service</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <small class="error-message" id="category-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="priceAmount">
+                                    <i class="fas fa-rupee-sign"></i>
+                                    Price (INR)
+                                </label>
+                                <input type="number" id="priceAmount" name="price.amount" required min="0" step="0.01" placeholder="0.00">
+                                <small class="error-message" id="priceAmount-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="estimatedDuration">
+                                    <i class="fas fa-clock"></i>
+                                    Duration (Optional)
+                                </label>
+                                <input type="text" id="estimatedDuration" name="estimatedDuration" placeholder="e.g., 30 minutes">
+                                <small class="error-message" id="estimatedDuration-error"></small>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="description">
+                                    <i class="fas fa-align-left"></i>
+                                    Description (Optional)
+                                </label>
+                                <textarea id="description" name="description" rows="3" placeholder="Describe the service details..."></textarea>
+                                <small class="error-message" id="description-error"></small>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="toggleAddServiceForm()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submit-service-btn">
+                                <i class="fas fa-save"></i>
+                                <span class="button-text">Add Service</span>
+                                <span class="loading-spinner hidden">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="form-error" id="service-form-error"></div>
+                        <div class="form-success" id="service-form-success"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Services List Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Your Services</h2>
+                    <div class="search-box">
+                        <input type="text" id="service-search" placeholder="Search services...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+
+                <div class="garage-list-container">
+                    <div class="loading" id="services-loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading services...
+                    </div>
+                    
+                    <div class="service-grid" id="service-grid">
+                        <!-- Service cards will be populated here -->
+                    </div>
+                    
+                    <div id="no-services" class="no-data hidden">
+                        <i class="fas fa-tools"></i>
+                        <h3>No Services Found</h3>
+                        <p>Add your first service to get started</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings Management Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Booking Management</h2>
+                    <div class="booking-filter">
+                        <select id="status-filter" onchange="filterBookings()">
+                            <option value="">All Bookings</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="in_progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="bookings-container">
+                    <div class="loading" id="bookings-loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading bookings...
+                    </div>
+                    
+                    <div class="bookings-grid" id="bookings-grid">
+                        <!-- Booking cards will be populated here -->
+                    </div>
+                    
+                    <div id="no-bookings" class="no-data hidden">
+                        <i class="fas fa-calendar-times"></i>
+                        <h3>No Bookings Found</h3>
+                        <p>You don't have any bookings yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Service Modal -->
+    <div id="edit-service-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Service</h3>
+                <span class="modal-close" onclick="closeEditServiceModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="edit-service-form" class="garage-form">
+                    <input type="hidden" id="edit-service-id">
+                    <div class="form-grid two-columns">
+                        <div class="form-group">
+                            <label for="edit-serviceName">
+                                <i class="fas fa-tools"></i>
+                                Service Name
+                            </label>
+                            <input type="text" id="edit-serviceName" name="serviceName" required>
+                            <small class="error-message" id="edit-serviceName-error"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-category">
+                                <i class="fas fa-tags"></i>
+                                Category
+                            </label>
+                            <select id="edit-category" name="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Towing">Towing</option>
+                                <option value="Oil Change">Oil Change</option>
+                                <option value="Battery Change">Battery Change</option>
+                                <option value="Servicing">Servicing</option>
+                                <option value="Inspection">Inspection</option>
+                                <option value="Tire Repair">Tire Repair</option>
+                                <option value="Engine Repair">Engine Repair</option>
+                                <option value="Brake Service">Brake Service</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <small class="error-message" id="edit-category-error"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-priceAmount">
+                                <i class="fas fa-rupee-sign"></i>
+                                Price (INR)
+                            </label>
+                            <input type="number" id="edit-priceAmount" name="price.amount" required min="0" step="0.01">
+                            <small class="error-message" id="edit-priceAmount-error"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-estimatedDuration">
+                                <i class="fas fa-clock"></i>
+                                Duration (Optional)
+                            </label>
+                            <input type="text" id="edit-estimatedDuration" name="estimatedDuration">
+                            <small class="error-message" id="edit-estimatedDuration-error"></small>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="edit-description">
+                                <i class="fas fa-align-left"></i>
+                                Description (Optional)
+                            </label>
+                            <textarea id="edit-description" name="description" rows="3"></textarea>
+                            <small class="error-message" id="edit-description-error"></small>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditServiceModal()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="update-service-btn">
+                            <i class="fas fa-save"></i>
+                            <span class="button-text">Update Service</span>
+                            <span class="loading-spinner hidden">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="form-error" id="edit-service-form-error"></div>
+                    <div class="form-success" id="edit-service-form-success"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Action Modal -->
+    <div id="booking-action-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="booking-action-title">Manage Booking</h3>
+                <span class="modal-close" onclick="closeBookingActionModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="booking-details" id="booking-details">
+                    <!-- Booking details will be populated here -->
+                </div>
+                
+                <form id="booking-action-form" class="garage-form">
+                    <input type="hidden" id="action-booking-id">
+                    <input type="hidden" id="action-type">
+                    
+                    <div class="form-group" id="estimated-cost-group" style="display: none;">
+                        <label for="estimated-cost">
+                            <i class="fas fa-rupee-sign"></i>
+                            Estimated Cost (Optional)
+                        </label>
+                        <input type="number" id="estimated-cost" name="estimatedCost" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    
+                    <div class="form-group" id="actual-cost-group" style="display: none;">
+                        <label for="actual-cost">
+                            <i class="fas fa-rupee-sign"></i>
+                            Actual Cost
+                        </label>
+                        <input type="number" id="actual-cost" name="actualCost" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="action-note">
+                            <i class="fas fa-sticky-note"></i>
+                            Note (Optional)
+                        </label>
+                        <textarea id="action-note" name="note" rows="3" placeholder="Add any notes or comments..."></textarea>
+                    </div>
+                    
+                    <div class="booking-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeBookingActionModal()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger" id="reject-btn" onclick="processBookingAction('cancelled')" style="display: none;">
+                            <i class="fas fa-times-circle"></i> Reject Booking
+                        </button>
+                        <button type="button" class="btn btn-success" id="accept-btn" onclick="processBookingAction('confirmed')" style="display: none;">
+                            <i class="fas fa-check-circle"></i> Accept Booking
+                        </button>
+                        <button type="button" class="btn btn-primary" id="start-btn" onclick="processBookingAction('in_progress')" style="display: none;">
+                            <i class="fas fa-play"></i> Start Service
+                        </button>
+                        <button type="button" class="btn btn-success" id="complete-btn" onclick="processBookingAction('completed')" style="display: none;">
+                            <i class="fas fa-check"></i> Mark Complete
+                        </button>
+                    </div>
+                    
+                    <div class="form-error" id="booking-action-error"></div>
+                    <div class="form-success" id="booking-action-success"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/garage-dashboard.js"></script>
+    
+    <script>
+        // Enhanced Security: Prevent browser caching and back button access after logout
+        
+        // Check authentication on page show (handles back/forward navigation)
+        window.addEventListener('pageshow', function(event) {
+            // If the page was loaded from browser cache (back/forward navigation)
+            if (event.persisted) {
+                console.log('🔄 Page loaded from cache - checking authentication');
+                checkAuthenticationStrict();
+            }
+        });
+        
+        // Check authentication when page becomes visible
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                console.log('👀 Page became visible - verifying session');
+                checkAuthenticationStrict();
+            }
+        });
+        
+        // Strict authentication check
+        function checkAuthenticationStrict() {
+            const token = localStorage.getItem('garageToken');
+            const garageInfo = localStorage.getItem('garageInfo');
+            
+            if (!token || !garageInfo) {
+                console.log('❌ Authentication failed - redirecting to login');
+                // Clear any remaining session data
+                localStorage.removeItem('garageToken');
+                localStorage.removeItem('garageInfo');
+                localStorage.removeItem('garageLastActivity');
+                
+                // Use replace() to prevent back button access to this page
+                window.location.replace('garage-login.html');
+                return false;
+            }
+            return true;
+        }
+        
+        // Prevent caching of this page
+        window.addEventListener('beforeunload', function() {
+            // Add no-cache headers simulation
+            if (window.history && window.history.pushState) {
+                window.history.pushState(null, null, window.location.href);
+                window.addEventListener('popstate', function() {
+                    checkAuthenticationStrict();
+                });
+            }
+        });
+        
+        // Initial authentication check
+        checkAuthenticationStrict();
+    </script>
+</body>
+</html>

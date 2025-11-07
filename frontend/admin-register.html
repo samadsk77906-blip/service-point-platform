@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Registration - Service Point</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-car-side"></i>
+                    <span>Service Point</span>
+                </div>
+                <h2>Admin Registration</h2>
+                <p>Register as the main administrator</p>
+            </div>
+
+            <form id="admin-register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="name">
+                        <i class="fas fa-user"></i>
+                        Full Name
+                    </label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        required 
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                    >
+                    <small class="error-message" id="name-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                    >
+                    <small class="error-message" id="email-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required 
+                            placeholder="Enter your password"
+                            autocomplete="new-password"
+                            minlength="6"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="password-eye"></i>
+                        </button>
+                    </div>
+                    <small class="error-message" id="password-error"></small>
+                </div>
+
+                <button type="submit" class="auth-button" id="register-button">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="button-text">Register Admin</span>
+                    <span class="loading-spinner hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+
+                <div class="form-error" id="form-error"></div>
+                <div class="form-success" id="form-success"></div>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an admin account? 
+                    <a href="admin-login.html">Login here</a>
+                </p>
+                <p><a href="index.html">← Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // API Configuration
+        const API_BASE_URL = window.location.origin + '/api';
+
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const passwordEye = document.getElementById('password-eye');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordEye.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                passwordEye.className = 'fas fa-eye';
+            }
+        }
+
+        // Clear error messages
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.getElementById('form-error').textContent = '';
+            document.getElementById('form-success').textContent = '';
+        }
+
+        // Show loading state
+        function setLoading(loading) {
+            const button = document.getElementById('register-button');
+            const buttonText = document.querySelector('.button-text');
+            const spinner = document.querySelector('.loading-spinner');
+            
+            if (loading) {
+                button.disabled = true;
+                buttonText.style.display = 'none';
+                spinner.classList.remove('hidden');
+            } else {
+                button.disabled = false;
+                buttonText.style.display = 'inline';
+                spinner.classList.add('hidden');
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('admin-register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+            setLoading(true);
+
+            const formData = new FormData(e.target);
+            const registerData = {
+                name: formData.get('name').trim(),
+                email: formData.get('email').trim(),
+                password: formData.get('password')
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/admin/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(registerData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store token and admin info
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminInfo', JSON.stringify(data.admin));
+                    
+                    document.getElementById('form-success').textContent = 'Registration successful! Redirecting...';
+                    
+                    // Redirect to admin dashboard
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1000);
+                } else {
+                    // Handle validation errors
+                    if (data.errors && Array.isArray(data.errors)) {
+                        data.errors.forEach(error => {
+                            const field = error.path || error.param;
+                            const errorElement = document.getElementById(`${field}-error`);
+                            if (errorElement) {
+                                errorElement.textContent = error.msg || error.message;
+                            }
+                        });
+                    } else {
+                        document.getElementById('form-error').textContent = data.message || 'Registration failed';
+                    }
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                document.getElementById('form-error').textContent = 'Network error. Please try again.';
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Check if user is already logged in
+        function checkExistingSession() {
+            const token = localStorage.getItem('adminToken');
+            if (token) {
+                window.location.href = 'admin-dashboard.html';
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingSession();
+        });
+    </script>
+</body>
+</html>

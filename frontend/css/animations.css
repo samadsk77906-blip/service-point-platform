@@ -1,0 +1,623 @@
+/* ================================
+   MODERN ANIMATIONS & EFFECTS
+   ================================ */
+
+/* Core Animation Keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(102, 126, 234, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Loading Spinner Enhanced */
+.loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.loading-spinner.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+.loading-spinner p {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Navigation Animations */
+.navbar {
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.nav-logo {
+    animation: slideInLeft 0.8s ease-out 0.2s both;
+}
+
+.nav-menu {
+    animation: slideInRight 0.8s ease-out 0.2s both;
+}
+
+.nav-link {
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.nav-link::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::before {
+    width: 100%;
+}
+
+.nav-link:hover {
+    transform: translateY(-2px);
+    color: #667eea;
+}
+
+.nav-dropdown-btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-dropdown-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(102, 126, 234, 0.2);
+    transition: all 0.6s ease;
+    transform: translate(-50%, -50%);
+}
+
+.nav-dropdown-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Hero Section Animations */
+.hero {
+    animation: fadeInUp 1s ease-out 0.3s both;
+}
+
+.hero-title {
+    animation: slideInLeft 1s ease-out 0.5s both;
+    position: relative;
+}
+
+.hero-subtitle {
+    animation: slideInLeft 1s ease-out 0.7s both;
+}
+
+.hero-buttons {
+    animation: fadeInUp 1s ease-out 0.9s both;
+}
+
+.hero-image {
+    animation: slideInRight 1s ease-out 0.6s both;
+}
+
+.hero-graphic i {
+    animation: float 3s ease-in-out infinite;
+    font-size: 8rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Button Animations */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateY(0);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.6s ease;
+    transform: translate(-50%, -50%);
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-gps {
+    background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+    position: relative;
+}
+
+.btn-gps:hover {
+    animation: pulse 2s infinite;
+    transform: translateY(-3px) scale(1.05);
+}
+
+/* Section Headers */
+.section-header {
+    animation: fadeInUp 0.8s ease-out both;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-header h2 {
+    position: relative;
+    display: inline-block;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+    transition: all 0.8s ease;
+    transform: translateX(-50%);
+}
+
+.section-header.visible h2::after {
+    width: 60px;
+}
+
+/* Search Filters Animations */
+.search-filters {
+    animation: scaleIn 0.8s ease-out 0.2s both;
+}
+
+.filter-group {
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.filter-group:nth-child(1) { animation-delay: 0.1s; }
+.filter-group:nth-child(2) { animation-delay: 0.2s; }
+.filter-group:nth-child(3) { animation-delay: 0.3s; }
+.filter-group:nth-child(4) { animation-delay: 0.4s; }
+
+.filter-select {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.filter-select:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+.filter-select:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Service Cards Animations */
+.services-grid {
+    display: grid;
+    gap: 2rem;
+}
+
+.service-card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease-out both;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.6s ease;
+}
+
+.service-card:hover::before {
+    left: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.service-icon {
+    transition: all 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.2) rotateY(180deg);
+}
+
+/* Garage Cards Animations */
+.garage-grid {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.garage-card {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+    animation: scaleIn 0.5s ease-out both;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+
+.garage-card:nth-child(1) { animation-delay: 0.1s; }
+.garage-card:nth-child(2) { animation-delay: 0.2s; }
+.garage-card:nth-child(3) { animation-delay: 0.3s; }
+.garage-card:nth-child(4) { animation-delay: 0.4s; }
+.garage-card:nth-child(5) { animation-delay: 0.5s; }
+.garage-card:nth-child(6) { animation-delay: 0.6s; }
+
+.garage-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.garage-card:hover::after {
+    left: 100%;
+}
+
+.garage-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.15);
+}
+
+/* Results Animations */
+.results-header {
+    animation: slideInLeft 0.6s ease-out both;
+}
+
+.view-btn {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.view-btn::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #667eea;
+    transition: width 0.3s ease;
+}
+
+.view-btn.active::before,
+.view-btn:hover::before {
+    width: 100%;
+}
+
+/* No Results Animation */
+.no-results {
+    animation: bounceIn 0.8s ease-out;
+    text-align: center;
+    padding: 3rem;
+}
+
+.no-results i {
+    animation: pulse 2s ease-in-out infinite;
+    font-size: 4rem;
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+/* Map Container Animation */
+.map-container {
+    animation: zoomIn 0.6s ease-out;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact Form Animations */
+.form-group {
+    animation: fadeInUp 0.6s ease-out both;
+}
+
+.form-group:nth-child(1) { animation-delay: 0.1s; }
+.form-group:nth-child(2) { animation-delay: 0.2s; }
+.form-group:nth-child(3) { animation-delay: 0.3s; }
+.form-group:nth-child(4) { animation-delay: 0.4s; }
+
+.form-input,
+.form-textarea {
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+}
+
+/* Alert Animations */
+.alert {
+    opacity: 0;
+    transform: translateX(-100px);
+    animation: slideInLeft 0.5s ease-out 0.1s both;
+    position: relative;
+    overflow: hidden;
+}
+
+.alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: currentColor;
+    opacity: 0.3;
+}
+
+/* Footer Animations */
+.footer {
+    animation: fadeInUp 0.8s ease-out both;
+}
+
+/* Scroll Animations */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.scroll-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+    .hero-title {
+        animation-delay: 0.3s;
+    }
+    
+    .hero-subtitle {
+        animation-delay: 0.5s;
+    }
+    
+    .hero-buttons {
+        animation-delay: 0.7s;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-5px) scale(1.01);
+    }
+    
+    .garage-card:hover {
+        transform: translateY(-4px) scale(1.01);
+    }
+}
+
+/* High Performance Optimizations */
+* {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+}
+
+.btn,
+.service-card,
+.garage-card,
+.nav-link {
+    will-change: transform;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

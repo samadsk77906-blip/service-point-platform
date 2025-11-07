@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 Find Nearby Garages</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        /* Modern animations and keyframes */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                background-position: -200px 0;
+            }
+            100% {
+                background-position: calc(200px + 100%) 0;
+            }
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh; padding: 20px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        .container {
+            max-width: 1200px; margin: 0 auto; background: white;
+            border-radius: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.15); overflow: hidden;
+            animation: scaleIn 0.6s ease-out 0.2s both;
+            transform: scale(0.95);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; text-align: center; padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .header h1 { 
+            font-size: 2.5em; margin-bottom: 15px; font-weight: 700;
+            animation: slideInLeft 0.8s ease-out 0.4s both;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p { 
+            font-size: 1.2em; opacity: 0.9;
+            animation: slideInRight 0.8s ease-out 0.6s both;
+            position: relative;
+            z-index: 1;
+        }
+        .content { 
+            padding: 40px;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+        
+        .gps-section {
+            background: linear-gradient(135deg, #e8f5e8 0%, #f0f8ff 100%);
+            border-radius: 15px; padding: 30px; margin-bottom: 40px; text-align: center;
+            border: 2px solid #e1f5fe;
+            animation: bounceIn 0.8s ease-out 1s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gps-section::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, #4caf50, #2196f3, #4caf50, #2196f3);
+            background-size: 400% 400%;
+            border-radius: 15px;
+            z-index: -1;
+            animation: gradient 4s ease infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .gps-section h3 { 
+            color: #2e7d32; margin-bottom: 15px; font-size: 1.4em;
+            animation: slideDown 0.6s ease-out 1.2s both;
+        }
+        
+        .gps-section p { 
+            color: #555; margin-bottom: 25px; font-size: 1.1em;
+            animation: slideDown 0.6s ease-out 1.4s both;
+        }
+        .gps-button {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white; border: none; padding: 18px 35px; border-radius: 50px;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex; align-items: center; gap: 12px;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.3);
+            animation: bounceIn 0.8s ease-out 1.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gps-button::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.6s ease;
+            transform: translate(-50%, -50%);
+        }
+        
+        .gps-button:hover::before {
+            width: 300px; height: 300px;
+        }
+        
+        .gps-button:hover:not(:disabled) {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(76,175,80,0.4);
+            animation: pulse 2s infinite;
+        }
+        
+        .gps-button:disabled {
+            background: #bbb; cursor: not-allowed;
+            transform: none;
+            animation: none;
+        }
+        
+        .gps-button:active {
+            transform: translateY(-2px) scale(0.98);
+        }
+        .location-info {
+            background: #e3f2fd; border: 2px solid #90caf9; border-radius: 12px;
+            padding: 20px; margin-top: 20px; display: none; text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .location-info.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        .location-info h4 {
+            color: #1565c0; margin-bottom: 12px; font-size: 1.2em;
+            animation: fadeInUp 0.4s ease-out 0.2s both;
+        }
+        
+        .location-info p {
+            color: #333; margin-bottom: 8px; font-size: 14px;
+            animation: fadeInUp 0.4s ease-out 0.4s both;
+        }
+        
+        .dropdown-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; margin: 40px 0;
+            animation: fadeInUp 0.8s ease-out 1.8s both;
+        }
+        
+        .dropdown-group {
+            animation: slideInLeft 0.6s ease-out both;
+        }
+        
+        .dropdown-group:nth-child(1) { animation-delay: 2s; }
+        .dropdown-group:nth-child(2) { animation-delay: 2.1s; }
+        .dropdown-group:nth-child(3) { animation-delay: 2.2s; }
+        .dropdown-group:nth-child(4) { animation-delay: 2.3s; }
+        .dropdown-group label {
+            display: block; margin-bottom: 10px; font-weight: 600; color: #333;
+            font-size: 14px; text-transform: uppercase; letter-spacing: 0.8px;
+        }
+        select {
+            width: 100%; padding: 18px 50px 18px 18px; border: 2px solid #e0e0e0;
+            border-radius: 12px; font-size: 16px; color: #333; background: white;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            appearance: none; position: relative;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 14 14'%3E%3Cpath fill='%23666' d='M7 10L2 5h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 18px center; background-size: 14px;
+            transform: translateY(0);
+        }
+        
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1), 0 8px 25px rgba(102,126,234,0.15);
+            transform: translateY(-2px);
+        }
+        
+        select:disabled {
+            background-color: #f5f5f5; color: #aaa; cursor: not-allowed;
+            opacity: 0.7; transform: none;
+        }
+        
+        select:hover:not(:disabled) {
+            border-color: #667eea;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(102,126,234,0.1);
+        }
+        .garages-section {
+            margin-top: 40px; display: none;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .garages-section.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        .garages-header {
+            text-align: center; margin-bottom: 30px;
+            animation: slideDown 0.6s ease-out 0.2s both;
+        }
+        
+        .garages-header h3 {
+            color: #333; font-size: 1.8em; margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .garages-header h3::after {
+            content: '';
+            position: absolute;
+            bottom: -5px; left: 50%;
+            width: 0; height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+            transition: all 0.6s ease;
+            transform: translateX(-50%);
+        }
+        
+        .garages-section.show .garages-header h3::after {
+            width: 60px;
+        }
+        
+        .garages-count {
+            color: #666; font-size: 1.1em;
+            animation: fadeInUp 0.4s ease-out 0.6s both;
+        }
+        
+        .loading {
+            text-align: center; padding: 40px; color: #666; font-size: 1.2em;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        .loading::after {
+            content: '⚙️';
+            animation: rotate 1s linear infinite;
+            margin-left: 10px;
+            display: inline-block;
+        }
+        
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .garages-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 25px;
+        }
+        
+        .garage-card {
+            background: white; border: 2px solid #f0f0f0; border-radius: 15px; padding: 25px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative; overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: scaleIn 0.5s ease-out both;
+        }
+        
+        .garage-card:nth-child(1) { animation-delay: 0.1s; }
+        .garage-card:nth-child(2) { animation-delay: 0.2s; }
+        .garage-card:nth-child(3) { animation-delay: 0.3s; }
+        .garage-card:nth-child(4) { animation-delay: 0.4s; }
+        .garage-card:nth-child(5) { animation-delay: 0.5s; }
+        .garage-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .garage-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+            transform-origin: left;
+        }
+        
+        .garage-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .garage-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .garage-card:hover::after {
+            left: 100%;
+        }
+        
+        .garage-card:hover {
+            border-color: #667eea;
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(102,126,234,0.15), 0 0 0 1px rgba(102,126,234,0.1);
+        }
+        
+        .garage-card:active {
+            transform: translateY(-4px) scale(0.98);
+        }
+        .garage-name {
+            font-size: 1.3em; font-weight: 700; color: #333; margin-bottom: 15px;
+            display: flex; align-items: center; gap: 8px;
+            position: relative;
+        }
+        
+        .garage-name span:first-child {
+            animation: rotate 2s ease-in-out infinite;
+            transform-origin: center;
+        }
+        
+        .garage-info {
+            margin-bottom: 12px; color: #555; display: flex; align-items: flex-start;
+            gap: 8px; line-height: 1.5;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideInLeft 0.4s ease-out both;
+        }
+        
+        .garage-info:nth-child(2) { animation-delay: 0.1s; }
+        .garage-info:nth-child(3) { animation-delay: 0.2s; }
+        .garage-info:nth-child(4) { animation-delay: 0.3s; }
+        .garage-info:nth-child(5) { animation-delay: 0.4s; }
+        .garage-info:nth-child(6) { animation-delay: 0.5s; }
+        .garage-info:nth-child(7) { animation-delay: 0.6s; }
+        
+        .garage-info strong { color: #333; min-width: 80px; }
+        .distance-badge {
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white; padding: 6px 12px; border-radius: 20px;
+            font-size: 14px; font-weight: 600; display: inline-block; margin-top: 10px;
+            opacity: 0;
+            transform: scale(0.8);
+            animation: bounceIn 0.6s ease-out 0.8s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .distance-badge::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        .services-list {
+            display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;
+        }
+        
+        .service-tag {
+            background: #f0f4ff; color: #667eea; padding: 4px 10px;
+            border-radius: 15px; font-size: 12px; border: 1px solid #e0e8ff;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: fadeInUp 0.4s ease-out both;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .service-tag:nth-child(1) { animation-delay: 0.1s; }
+        .service-tag:nth-child(2) { animation-delay: 0.15s; }
+        .service-tag:nth-child(3) { animation-delay: 0.2s; }
+        .service-tag:nth-child(4) { animation-delay: 0.25s; }
+        .service-tag:nth-child(5) { animation-delay: 0.3s; }
+        
+        .service-tag:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+        .alert {
+            padding: 15px 20px; border-radius: 10px; margin: 20px 0; font-weight: 500;
+            opacity: 0;
+            transform: translateX(-100px);
+            animation: slideInLeft 0.5s ease-out 0.1s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            background: currentColor;
+            opacity: 0.3;
+        }
+        
+        .alert.success {
+            background: #d4edda; border: 1px solid #c3e6cb; color: #155724;
+            animation: slideInLeft 0.5s ease-out both;
+        }
+        
+        .alert.error {
+            background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24;
+            animation: slideInLeft 0.5s ease-out both;
+        }
+        
+        .alert.info {
+            background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460;
+            animation: slideInLeft 0.5s ease-out both;
+        }
+        @media (max-width: 768px) {
+            .dropdown-grid { grid-template-columns: 1fr; }
+            .content { padding: 20px; }
+            .garages-grid { grid-template-columns: 1fr; }
+            .header { padding: 30px 20px; }
+            .header h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Find Nearby Garages</h1>
+            <p>Discover the best auto service centers near you with GPS or manual selection</p>
+        </div>
+        
+        <div class="content">
+            <!-- GPS Section -->
+            <div class="gps-section">
+                <h3>📍 Use Your Current Location</h3>
+                <p>Click below to automatically detect your location and find nearby garages</p>
+                <button id="gpsButton" class="gps-button">
+                    <span>🛰️</span>
+                    <span>Use GPS Location</span>
+                </button>
+                
+                <div id="locationInfo" class="location-info">
+                    <h4>📍 Your Current Location</h4>
+                    <p><strong>Coordinates:</strong> <span id="coordinates"></span></p>
+                    <p><strong>Estimated Address:</strong> <span id="address"></span></p>
+                    <p><strong>Accuracy:</strong> <span id="accuracy"></span></p>
+                </div>
+            </div>
+
+            <!-- Manual Selection -->
+            <div class="dropdown-grid">
+                <div class="dropdown-group">
+                    <label for="country">Country</label>
+                    <select id="country" name="country">
+                        <option value="India">🇮🇳 India</option>
+                    </select>
+                </div>
+
+                <div class="dropdown-group">
+                    <label for="state">State</label>
+                    <select id="state" name="state" disabled>
+                        <option value="">Select State</option>
+                    </select>
+                </div>
+
+                <div class="dropdown-group">
+                    <label for="city">City</label>
+                    <select id="city" name="city" disabled>
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+
+                <div class="dropdown-group">
+                    <label for="district">District</label>
+                    <select id="district" name="district" disabled>
+                        <option value="">Select District</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Garages Results -->
+            <div id="garagesSection" class="garages-section">
+                <div class="garages-header">
+                    <h3>🔧 Available Garages</h3>
+                    <p class="garages-count" id="garagesCount"></p>
+                </div>
+                
+                <div id="loadingMessage" class="loading" style="display: none;">
+                    Finding the best garages for you...
+                </div>
+                
+                <div id="garagesGrid" class="garages-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // India location data
+        const indiaData = {
+            "Maharashtra": {
+                "Mumbai": {
+                    "districts": ["Mumbai City", "Mumbai Suburban", "Thane", "Raigad", "Palghar"]
+                },
+                "Pune": {
+                    "districts": ["Pune", "Pimpri-Chinchwad", "Baramati", "Maval", "Haveli"]
+                },
+                "Nagpur": {
+                    "districts": ["Nagpur", "Wardha", "Bhandara", "Gondia", "Chandrapur"]
+                }
+            },
+            "Delhi": {
+                "New Delhi": {
+                    "districts": ["Central Delhi", "New Delhi", "North Delhi", "South Delhi", "East Delhi", "West Delhi"]
+                }
+            },
+            "Karnataka": {
+                "Bangalore": {
+                    "districts": ["Bangalore Urban", "Bangalore Rural", "Ramanagara", "Tumkur"]
+                },
+                "Mysore": {
+                    "districts": ["Mysore", "Mandya", "Hassan", "Chamarajanagar"]
+                }
+            },
+            "Tamil Nadu": {
+                "Chennai": {
+                    "districts": ["Chennai", "Kanchipuram", "Tiruvallur", "Chengalpattu"]
+                },
+                "Coimbatore": {
+                    "districts": ["Coimbatore", "Tirupur", "Erode", "Salem"]
+                }
+            },
+            "West Bengal": {
+                "Kolkata": {
+                    "districts": ["Kolkata", "Howrah", "North 24 Parganas", "South 24 Parganas"]
+                }
+            },
+            "Gujarat": {
+                "Ahmedabad": {
+                    "districts": ["Ahmedabad", "Gandhinagar", "Kheda", "Anand"]
+                },
+                "Surat": {
+                    "districts": ["Surat", "Bharuch", "Narmada", "Tapi"]
+                }
+            },
+            "Rajasthan": {
+                "Jaipur": {
+                    "districts": ["Jaipur", "Sikar", "Alwar", "Dausa"]
+                },
+                "Jodhpur": {
+                    "districts": ["Jodhpur", "Nagaur", "Pali", "Barmer"]
+                }
+            }
+        };
+
+        // Sample garages with realistic Indian locations
+        const sampleGarages = [
+            {
+                garageName: "Mumbai Auto Care",
+                ownerName: "Rajesh Kumar",
+                email: "rajesh@mumbaicare.com",
+                phone: "+91 9876543210",
+                services: ["Car Repair", "Oil Change", "Tire Service", "AC Repair", "Engine Diagnostics"],
+                location: {
+                    address: "Shop No. 15, Linking Road, Bandra West, Mumbai - 400050",
+                    city: "Mumbai", state: "Maharashtra", district: "Mumbai Suburban"
+                },
+                rating: 4.5,
+                lat: 19.0596 + (Math.random() - 0.5) * 0.02,
+                lng: 72.8295 + (Math.random() - 0.5) * 0.02,
+                isActive: true
+            },
+            {
+                garageName: "Delhi Motors Hub",
+                ownerName: "Suresh Singh",
+                email: "suresh@delhimotors.com",
+                phone: "+91 9876543211",
+                services: ["Engine Repair", "Brake Service", "Electrical Work", "Body Painting"],
+                location: {
+                    address: "Block A-12, Sector 15, Rohini, New Delhi - 110085",
+                    city: "New Delhi", state: "Delhi", district: "North Delhi"
+                },
+                rating: 4.2,
+                lat: 28.7041 + (Math.random() - 0.5) * 0.02,
+                lng: 77.1025 + (Math.random() - 0.5) * 0.02,
+                isActive: true
+            },
+            {
+                garageName: "Bangalore Expert Auto",
+                ownerName: "Amit Patel",
+                email: "amit@blrexpert.com",
+                phone: "+91 9876543212",
+                services: ["Luxury Car Service", "Import Car Repair", "Performance Tuning", "Diagnostics"],
+                location: {
+                    address: "No. 45, 100 Feet Road, Indiranagar, Bangalore - 560038",
+                    city: "Bangalore", state: "Karnataka", district: "Bangalore Urban"
+                },
+                rating: 4.7,
+                lat: 12.9716 + (Math.random() - 0.5) * 0.02,
+                lng: 77.5946 + (Math.random() - 0.5) * 0.02,
+                isActive: true
+            },
+            {
+                garageName: "Chennai Service Point",
+                ownerName: "Venkat Raman",
+                email: "venkat@chennaiservice.com",
+                phone: "+91 9876543213",
+                services: ["General Repair", "Maintenance", "Parts Replacement", "Insurance Claims"],
+                location: {
+                    address: "Old No. 23, New No. 46, Anna Salai, T. Nagar, Chennai - 600017",
+                    city: "Chennai", state: "Tamil Nadu", district: "Chennai"
+                },
+                rating: 4.0,
+                lat: 13.0827 + (Math.random() - 0.5) * 0.02,
+                lng: 80.2707 + (Math.random() - 0.5) * 0.02,
+                isActive: true
+            },
+            {
+                garageName: "Pune Quick Fix",
+                ownerName: "Mahesh Joshi",
+                email: "mahesh@punequick.com",
+                phone: "+91 9876543214",
+                services: ["Two Wheeler Service", "Four Wheeler Repair", "Battery Service", "Tyre Fitting"],
+                location: {
+                    address: "Survey No. 34, Karve Road, Pune - 411004",
+                    city: "Pune", state: "Maharashtra", district: "Pune"
+                },
+                rating: 4.3,
+                lat: 18.5204 + (Math.random() - 0.5) * 0.02,
+                lng: 73.8567 + (Math.random() - 0.5) * 0.02,
+                isActive: true
+            },
+            {
+                garageName: "Kolkata Auto Solutions",
+                ownerName: "Aniket Das",
+                email: "aniket@kolkatauto.com",
+                phone: "+91 9876543215",
+                services: ["Engine Overhaul", "Transmission Repair", "AC Repair", "Electrical"],
+                location: {
+                    address: "12/1A, S.P. Mukherjee Road, Kolkata - 700026",
+                    city: "Kolkata", state: "West Bengal", district: "Kolkata"
+                },
+                rating: 4.1,
+                lat: 22.5726 + (Math.random() - 0.5) * 0.02,
+                lng: 88.3639 + (Math.random() - 0.5) * 0.02,
+                isActive: true
+            }
+        ];
+
+        // DOM elements
+        const stateSelect = document.getElementById('state');
+        const citySelect = document.getElementById('city');
+        const districtSelect = document.getElementById('district');
+        const gpsButton = document.getElementById('gpsButton');
+        const locationInfo = document.getElementById('locationInfo');
+        const garagesSection = document.getElementById('garagesSection');
+        const garagesGrid = document.getElementById('garagesGrid');
+        const loadingMessage = document.getElementById('loadingMessage');
+        const garagesCount = document.getElementById('garagesCount');
+
+        let userLocation = null;
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDropdowns();
+            showAlert('Welcome! Use GPS for instant results or select your location manually.', 'info');
+        });
+
+        // Initialize dropdowns
+        function initializeDropdowns() {
+            const states = Object.keys(indiaData).sort();
+            stateSelect.innerHTML = '<option value="">Select State</option>';
+            states.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateSelect.appendChild(option);
+            });
+            stateSelect.disabled = false;
+        }
+
+        // Handle state selection
+        stateSelect.addEventListener('change', function() {
+            const selectedState = this.value;
+            citySelect.innerHTML = '<option value="">Select City</option>';
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+            districtSelect.disabled = true;
+
+            if (selectedState && indiaData[selectedState]) {
+                const cities = Object.keys(indiaData[selectedState]).sort();
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+                citySelect.disabled = false;
+            } else {
+                citySelect.disabled = true;
+            }
+            hideGarages();
+        });
+
+        // Handle city selection
+        citySelect.addEventListener('change', function() {
+            const selectedState = stateSelect.value;
+            const selectedCity = this.value;
+            districtSelect.innerHTML = '<option value="">Select District</option>';
+
+            if (selectedState && selectedCity && indiaData[selectedState][selectedCity]) {
+                const districts = indiaData[selectedState][selectedCity].districts.sort();
+                districts.forEach(district => {
+                    const option = document.createElement('option');
+                    option.value = district;
+                    option.textContent = district;
+                    districtSelect.appendChild(option);
+                });
+                districtSelect.disabled = false;
+            } else {
+                districtSelect.disabled = true;
+            }
+            hideGarages();
+        });
+
+        // Handle district selection
+        districtSelect.addEventListener('change', function() {
+            if (this.value) {
+                const selectedState = stateSelect.value;
+                const selectedCity = citySelect.value;
+                const selectedDistrict = this.value;
+                showGaragesByLocation(selectedState, selectedCity, selectedDistrict);
+            } else {
+                hideGarages();
+            }
+        });
+
+        // GPS functionality - FIXED VERSION
+        gpsButton.addEventListener('click', function() {
+            if (!navigator.geolocation) {
+                showAlert('❌ GPS not supported by your browser. Please select location manually.', 'error');
+                return;
+            }
+
+            gpsButton.disabled = true;
+            gpsButton.innerHTML = '<span>📡</span><span>Getting Location...</span>';
+
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 15000,
+                maximumAge: 60000
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+                    
+                    // Display coordinates
+                    document.getElementById('coordinates').textContent = 
+                        `${userLocation.lat.toFixed(6)}, ${userLocation.lng.toFixed(6)}`;
+                    
+                    // Display accuracy
+                    document.getElementById('accuracy').textContent = 
+                        `±${Math.round(userLocation.accuracy)} meters`;
+                    
+                    // Mock reverse geocoding
+                    setTimeout(() => {
+                        document.getElementById('address').textContent = 
+                            `Near ${userLocation.lat.toFixed(3)}, ${userLocation.lng.toFixed(3)}, India`;
+                    }, 500);
+                    
+                    locationInfo.classList.add('show');
+                    showNearbyGarages();
+                    
+                    gpsButton.innerHTML = '<span>✅</span><span>Location Found!</span>';
+                    gpsButton.disabled = false;
+                    
+                    showAlert('🎉 Location found successfully! Showing nearby garages sorted by distance.', 'success');
+                },
+                function(error) {
+                    let errorMsg = '❌ Unable to get your location. ';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg += 'Please allow location access when prompted by your browser.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg += 'Location service is unavailable. Check your GPS/internet.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg += 'Location request timed out. Please try again.';
+                            break;
+                        default:
+                            errorMsg += 'An unknown GPS error occurred.';
+                    }
+                    showAlert(errorMsg, 'error');
+                    gpsButton.innerHTML = '<span>🛰️</span><span>Try GPS Again</span>';
+                    gpsButton.disabled = false;
+                },
+                options
+            );
+        });
+
+        // Calculate distance using Haversine formula
+        function calculateDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371; // Earth's radius in kilometers
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLng/2) * Math.sin(dLng/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // Show garages by location filter
+        function showGaragesByLocation(state, city, district) {
+            const filteredGarages = sampleGarages.filter(garage => 
+                garage.isActive && 
+                garage.location.state === state &&
+                garage.location.city === city &&
+                garage.location.district === district
+            );
+            
+            displayGarages(filteredGarages, `${district}, ${city}, ${state}`);
+        }
+
+        // Show nearby garages based on GPS
+        function showNearbyGarages() {
+            if (!userLocation) return;
+            
+            const maxDistance = 100; // 100 km radius
+            const nearbyGarages = sampleGarages
+                .filter(garage => garage.isActive)
+                .map(garage => ({
+                    ...garage,
+                    distance: calculateDistance(
+                        userLocation.lat,
+                        userLocation.lng,
+                        garage.lat,
+                        garage.lng
+                    )
+                }))
+                .filter(garage => garage.distance <= maxDistance)
+                .sort((a, b) => a.distance - b.distance);
+            
+            displayGarages(nearbyGarages, 'your current location');
+        }
+
+        // Display garages in the grid
+        function displayGarages(garages, locationText) {
+            garagesSection.classList.add('show');
+            loadingMessage.style.display = 'block';
+            garagesGrid.innerHTML = '';
+
+            // Simulate loading for better UX
+            setTimeout(() => {
+                loadingMessage.style.display = 'none';
+                
+                if (garages.length === 0) {
+                    garagesGrid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #666;">
+                            <h3>🔍 No Garages Found</h3>
+                            <p>Sorry, no active garages found near <strong>${locationText}</strong>.</p>
+                            <p>Try expanding your search area or selecting a different location.</p>
+                        </div>
+                    `;
+                    garagesCount.textContent = '';
+                    return;
+                }
+
+                garagesCount.textContent = `Found ${garages.length} garage${garages.length > 1 ? 's' : ''} near ${locationText}`;
+
+                garages.forEach(garage => {
+                    const garageCard = createGarageCard(garage);
+                    garagesGrid.appendChild(garageCard);
+                });
+            }, 1200);
+        }
+
+        // Create garage card element
+        function createGarageCard(garage) {
+            const card = document.createElement('div');
+            card.className = 'garage-card';
+            
+            const distanceBadge = garage.distance ? 
+                `<div class="distance-badge">📍 ${garage.distance.toFixed(1)} km away</div>` : '';
+            
+            const servicesHTML = garage.services ? 
+                `<div style="margin-top: 15px;">
+                    <strong>🔧 Services:</strong>
+                    <div class="services-list">
+                        ${garage.services.map(service => 
+                            `<span class="service-tag">${service}</span>`
+                        ).join('')}
+                    </div>
+                </div>` : '';
+            
+            const rating = garage.rating || 'N/A';
+            const stars = garage.rating ? '⭐'.repeat(Math.floor(garage.rating)) : '';
+            
+            card.innerHTML = `
+                <div class="garage-name">
+                    <span>🔧</span>
+                    <span>${garage.garageName}</span>
+                </div>
+                <div class="garage-info">
+                    <strong>👤 Owner:</strong>
+                    <span>${garage.ownerName}</span>
+                </div>
+                <div class="garage-info">
+                    <strong>📍 Address:</strong>
+                    <span>${garage.location.address}</span>
+                </div>
+                <div class="garage-info">
+                    <strong>📞 Phone:</strong>
+                    <span><a href="tel:${garage.phone}" style="color: #667eea; text-decoration: none;">${garage.phone}</a></span>
+                </div>
+                <div class="garage-info">
+                    <strong>📧 Email:</strong>
+                    <span><a href="mailto:${garage.email}" style="color: #667eea; text-decoration: none;">${garage.email}</a></span>
+                </div>
+                <div class="garage-info">
+                    <strong>⭐ Rating:</strong>
+                    <span style="color: #ff9800; font-weight: 600;">${rating}/5 ${stars}</span>
+                </div>
+                ${servicesHTML}
+                ${distanceBadge}
+            `;
+            
+            return card;
+        }
+
+        // Hide garages section
+        function hideGarages() {
+            garagesSection.classList.remove('show');
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert ${type}`;
+            alertDiv.textContent = message;
+            
+            const content = document.querySelector('.content');
+            content.insertBefore(alertDiv, content.firstChild);
+            
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 6000);
+        }
+    </script>
+</body>
+</html>

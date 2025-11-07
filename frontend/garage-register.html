@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage Owner Registration - Service Point</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-car-side"></i>
+                    <span>Service Point</span>
+                </div>
+                <h2>Garage Owner Registration</h2>
+                <p>Register using your garage details provided by the admin</p>
+                <div class="info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <small><strong>How to register:</strong> Use the exact Email and Garage ID that the admin entered when adding your garage. You can see these details in the admin dashboard above.</small>
+                </div>
+            </div>
+
+            <form id="garage-register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="email">
+                        <i class="fas fa-envelope"></i>
+                        Registered Email Address
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        required 
+                        placeholder="Enter the email registered by admin"
+                        autocomplete="email"
+                    >
+                    <small class="error-message" id="email-error"></small>
+                    <small class="help-text">This must be the same email that the admin used when adding your garage</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="garageId">
+                        <i class="fas fa-id-card"></i>
+                        Garage ID
+                    </label>
+                    <input 
+                        type="text" 
+                        id="garageId" 
+                        name="garageId" 
+                        required 
+                        placeholder="Enter your Garage ID (provided by admin)"
+                        style="text-transform: uppercase;"
+                    >
+                    <small class="error-message" id="garageId-error"></small>
+                    <small class="help-text">This is the unique ID assigned to your garage by the admin</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">
+                        <i class="fas fa-lock"></i>
+                        Create Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password" 
+                            required 
+                            placeholder="Create a secure password"
+                            autocomplete="new-password"
+                            minlength="6"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword('password', 'password-eye')">
+                            <i class="fas fa-eye" id="password-eye"></i>
+                        </button>
+                    </div>
+                    <small class="error-message" id="password-error"></small>
+                    <small class="help-text">Password must be at least 6 characters long</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        <i class="fas fa-lock"></i>
+                        Confirm Password
+                    </label>
+                    <div class="password-input">
+                        <input 
+                            type="password" 
+                            id="confirmPassword" 
+                            name="confirmPassword" 
+                            required 
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            minlength="6"
+                        >
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'confirm-password-eye')">
+                            <i class="fas fa-eye" id="confirm-password-eye"></i>
+                        </button>
+                    </div>
+                    <small class="error-message" id="confirmPassword-error"></small>
+                </div>
+
+                <button type="submit" class="auth-button" id="register-button">
+                    <i class="fas fa-user-plus"></i>
+                    <span class="button-text">Complete Registration</span>
+                    <span class="loading-spinner hidden">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </span>
+                </button>
+
+                <div class="form-error" id="form-error"></div>
+                <div class="form-success" id="form-success"></div>
+            </form>
+
+            <div class="auth-footer">
+                <p>Already have an account? 
+                    <a href="garage-login.html" style="color: #6366f1; font-weight: 500;">Login here</a>
+                </p>
+                <p>Need help? Contact your admin.</p>
+                <p><a href="index.html">← Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        // API Configuration
+        const API_BASE_URL = window.location.origin + '/api';
+
+        // Toggle password visibility
+        function togglePassword(inputId, eyeId) {
+            const passwordInput = document.getElementById(inputId);
+            const passwordEye = document.getElementById(eyeId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordEye.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                passwordEye.className = 'fas fa-eye';
+            }
+        }
+
+        // Clear error messages
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.getElementById('form-error').textContent = '';
+            document.getElementById('form-success').textContent = '';
+        }
+
+        // Show loading state
+        function setLoading(loading) {
+            const button = document.getElementById('register-button');
+            const buttonText = document.querySelector('.button-text');
+            const spinner = document.querySelector('.loading-spinner');
+            
+            if (loading) {
+                button.disabled = true;
+                buttonText.style.display = 'none';
+                spinner.classList.remove('hidden');
+            } else {
+                button.disabled = false;
+                buttonText.style.display = 'inline';
+                spinner.classList.add('hidden');
+            }
+        }
+
+        // Validate passwords match
+        function validatePasswords() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmError = document.getElementById('confirmPassword-error');
+
+            if (password !== confirmPassword) {
+                confirmError.textContent = 'Passwords do not match';
+                return false;
+            } else {
+                confirmError.textContent = '';
+                return true;
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('garage-register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+
+            // Validate passwords match
+            if (!validatePasswords()) {
+                return;
+            }
+
+            setLoading(true);
+
+            const formData = new FormData(e.target);
+            const registerData = {
+                email: formData.get('email').trim().toLowerCase(),
+                garageId: formData.get('garageId').trim().toUpperCase(),
+                password: formData.get('password')
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/garage/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(registerData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('form-success').textContent = 
+                        '✅ Registration successful! You can now login with your credentials.';
+                    
+                    // Clear form
+                    e.target.reset();
+                    
+                    // Redirect to login after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'garage-login.html';
+                    }, 3000);
+                } else {
+                    // Handle validation errors
+                    if (data.errors && Array.isArray(data.errors)) {
+                        data.errors.forEach(error => {
+                            const field = error.path || error.param;
+                            const errorElement = document.getElementById(`${field}-error`);
+                            if (errorElement) {
+                                errorElement.textContent = error.msg || error.message;
+                            }
+                        });
+                    } else {
+                        document.getElementById('form-error').textContent = 
+                            data.message || '❌ Registration failed. Please check your details.';
+                    }
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                document.getElementById('form-error').textContent = 
+                    '❌ Network error. Please try again.';
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Real-time password validation
+        document.getElementById('confirmPassword').addEventListener('input', validatePasswords);
+
+        // Convert garage ID to uppercase as user types
+        document.getElementById('garageId').addEventListener('input', function(e) {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        // Check if user is already logged in
+        function checkExistingSession() {
+            const token = localStorage.getItem('garageToken');
+            if (token) {
+                window.location.href = 'garage-dashboard.html';
+            }
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', () => {
+            checkExistingSession();
+        });
+    </script>
+
+    <style>
+        .info-box {
+            background: #e0f2fe;
+            border: 1px solid #0288d1;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .info-box i {
+            color: #0288d1;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .info-box small {
+            color: #01579b;
+            line-height: 1.4;
+        }
+
+        .help-text {
+            display: block;
+            color: #666;
+            font-size: 0.8em;
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .form-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .form-success:not(:empty) {
+            display: block;
+        }
+
+        .password-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .password-toggle:hover {
+            color: #333;
+        }
+    </style>
+</body>
+</html>

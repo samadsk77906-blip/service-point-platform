@@ -1,0 +1,780 @@
+/* Superbike Stunt Loading Animation - Original Vibrant Colors */
+.superbike-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, 
+        #000000 0%,
+        #111111 60%,
+        #222222 80%,
+        #333333 100%);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+
+.animation-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Road and Background - Realistic Road */
+.road-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, 
+        #2a2a2a 0%, 
+        #1a1a1a 50%, 
+        #0a0a0a 100%);
+    border-top: 2px solid #333;
+    box-shadow: 
+        inset 0 4px 8px rgba(0, 0, 0, 0.5),
+        0 -5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.road {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, 
+        #2a2a2a 0%, 
+        #1e1e1e 30%,
+        #1a1a1a 70%, 
+        #151515 100%);
+    position: relative;
+    /* Add realistic asphalt texture */
+    background-image: 
+        repeating-linear-gradient(45deg,
+            transparent,
+            transparent 1px,
+            rgba(255, 255, 255, 0.02) 1px,
+            rgba(255, 255, 255, 0.02) 2px
+        ),
+        repeating-linear-gradient(-45deg,
+            transparent,
+            transparent 1px,
+            rgba(255, 255, 255, 0.01) 1px,
+            rgba(255, 255, 255, 0.01) 2px
+        );
+}
+
+.road-lines {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    height: 4px;
+    background: repeating-linear-gradient(
+        to right,
+        transparent 0px,
+        transparent 30px,
+        #ffffff 30px,
+        #ffffff 60px,
+        transparent 60px,
+        transparent 90px
+    );
+    border-radius: 2px;
+    box-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.3),
+        0 1px 2px rgba(0, 0, 0, 0.5);
+    animation: roadMoving 1.5s linear infinite;
+    opacity: 0.9;
+}
+
+@keyframes roadMoving {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-90px); }
+}
+
+/* City Skyline */
+.skyline {
+    position: absolute;
+    bottom: 200px;
+    width: 100%;
+    height: 200px;
+}
+
+.building {
+    position: absolute;
+    bottom: 0;
+    width: 60px;
+    background: linear-gradient(to top, #1a1a1a, #333);
+    border-top: 3px solid #ffeb3b;
+    border-radius: 2px 2px 0 0;
+    box-shadow: 
+        0 0 20px rgba(255, 235, 59, 0.3),
+        inset 0 0 20px rgba(0, 0, 0, 0.2);
+    animation: buildingFloat 4s ease-in-out infinite alternate;
+}
+
+.building:nth-child(odd) {
+    animation-delay: -2s;
+    background: linear-gradient(to top, #1a1a1a, #333, #444);
+    border-top-color: #ffeb3b;
+    box-shadow: 
+        0 0 20px rgba(255, 235, 59, 0.3),
+        inset 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.building:before {
+    content: '';
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    width: 8px;
+    height: 8px;
+    background: #ffeb3b;
+    border-radius: 1px;
+    box-shadow: 
+        0 20px 0 #ffeb3b,
+        20px 0 0 #ffeb3b,
+        20px 20px 0 #ffeb3b,
+        0 40px 0 #ffeb3b,
+        20px 40px 0 #ffeb3b;
+    animation: windowGlow 3s ease-in-out infinite alternate;
+}
+
+.building:nth-child(odd):before {
+    background: #ffeb3b;
+    box-shadow: 
+        0 20px 0 #ffeb3b,
+        20px 0 0 #ffeb3b,
+        20px 20px 0 #ffeb3b,
+        0 40px 0 #ffeb3b,
+        20px 40px 0 #ffeb3b;
+}
+
+@keyframes windowGlow {
+    0% { opacity: 0.8; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1.1); }
+}
+
+@keyframes buildingFloat {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-10px); }
+}
+
+/* Superbike Container */
+.superbike-container {
+    position: absolute;
+    bottom: 220px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: superbikeStunt 4s ease-in-out infinite;
+}
+
+@keyframes superbikeStunt {
+    0% { 
+        transform: translateX(-50%) rotate(0deg) translateY(0px); 
+    }
+    25% { 
+        transform: translateX(-50%) rotate(-15deg) translateY(-50px) scale(1.1); 
+    }
+    50% { 
+        transform: translateX(-50%) rotate(360deg) translateY(-100px) scale(1.2); 
+    }
+    75% { 
+        transform: translateX(-50%) rotate(375deg) translateY(-50px) scale(1.1); 
+    }
+    100% { 
+        transform: translateX(-50%) rotate(360deg) translateY(0px) scale(1); 
+    }
+}
+
+/* Superbike Design */
+.superbike {
+    position: relative;
+    width: 120px;
+    height: 60px;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
+}
+
+/* Bike Body */
+.bike-body {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.bike-frame {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    width: 60px;
+    height: 20px;
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    border-radius: 10px;
+    border: 2px solid #333;
+    box-shadow: 
+        0 0 15px rgba(255, 107, 53, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.bike-seat {
+    position: absolute;
+    top: 15px;
+    left: 45px;
+    width: 30px;
+    height: 15px;
+    background: #333;
+    border-radius: 8px;
+    border: 1px solid #666;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.bike-engine {
+    position: absolute;
+    top: 25px;
+    left: 20px;
+    width: 25px;
+    height: 15px;
+    background: linear-gradient(45deg, #666, #999);
+    border-radius: 4px;
+    border: 1px solid #333;
+    box-shadow: 
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.1);
+}
+
+.bike-exhaust {
+    position: absolute;
+    top: 30px;
+    right: 10px;
+    width: 20px;
+    height: 8px;
+    background: #444;
+    border-radius: 4px;
+    border: 1px solid #333;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.exhaust-flame {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 6px;
+    background: linear-gradient(90deg, #ff4757, #ffa502, transparent);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 71, 87, 0.8);
+    animation: exhaustFlame 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes exhaustFlame {
+    0% { 
+        transform: translateY(-50%) scaleX(0.8); 
+        opacity: 0.8;
+    }
+    100% { 
+        transform: translateY(-50%) scaleX(1.2); 
+        opacity: 1;
+    }
+}
+
+/* Wheels */
+.wheel {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, #333 30%, #666 70%, #999 100%);
+    border-radius: 50%;
+    border: 3px solid #222;
+    box-shadow: 
+        0 0 15px rgba(0, 0, 0, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    animation: wheelSpin 0.5s linear infinite;
+}
+
+.front-wheel {
+    top: 20px;
+    left: 10px;
+}
+
+.rear-wheel {
+    top: 20px;
+    right: 10px;
+}
+
+.rim {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    background: linear-gradient(45deg, #ffa502, #ff6348);
+    border-radius: 50%;
+    border: 2px solid #333;
+    box-shadow: 
+        0 0 10px rgba(255, 165, 2, 0.6),
+        inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.spoke {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 30px;
+    background: #333;
+    border-radius: 1px;
+}
+
+@keyframes wheelSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Rider */
+.rider {
+    position: absolute;
+    top: 0;
+    left: 45px;
+    width: 20px;
+    height: 35px;
+}
+
+.helmet {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    background: linear-gradient(45deg, #ff3742, #ff6b35);
+    border-radius: 50%;
+    border: 2px solid #333;
+    box-shadow: 
+        0 0 8px rgba(255, 55, 66, 0.6),
+        inset 0 1px 2px rgba(255, 255, 255, 0.2);
+}
+
+.helmet:before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    width: 80%;
+    height: 3px;
+    background: rgba(255,255,255,0.8);
+    border-radius: 2px;
+}
+
+.body {
+    position: absolute;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 20px;
+    background: linear-gradient(45deg, #333, #666);
+    border-radius: 8px;
+    border: 1px solid #222;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.arms {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: #333;
+    border-radius: 4px;
+    border: 1px solid #222;
+}
+
+/* Particle Effects */
+.particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: #ffa502;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 165, 2, 0.8);
+    animation: particleFloat 2s ease-out infinite;
+}
+
+.particle:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+    top: 40%;
+    left: 80%;
+    animation-delay: 0.4s;
+}
+
+.particle:nth-child(3) {
+    top: 60%;
+    left: 60%;
+    animation-delay: 0.8s;
+}
+
+.particle:nth-child(4) {
+    top: 30%;
+    left: 40%;
+    animation-delay: 1.2s;
+}
+
+.particle:nth-child(5) {
+    top: 70%;
+    left: 10%;
+    animation-delay: 1.6s;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(0px) scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: translateY(-20px) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) scale(0);
+        opacity: 0;
+    }
+}
+
+/* Speed Lines */
+.speed-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.speed-line {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #fff, transparent);
+    animation: speedLine 1s ease-out infinite;
+}
+
+.speed-line:nth-child(1) {
+    top: 30%;
+    right: 0;
+    animation-delay: 0s;
+}
+
+.speed-line:nth-child(2) {
+    top: 50%;
+    right: 0;
+    animation-delay: 0.2s;
+}
+
+.speed-line:nth-child(3) {
+    top: 70%;
+    right: 0;
+    animation-delay: 0.4s;
+}
+
+.speed-line:nth-child(4) {
+    top: 40%;
+    right: 0;
+    animation-delay: 0.6s;
+}
+
+.speed-line:nth-child(5) {
+    top: 60%;
+    right: 0;
+    animation-delay: 0.8s;
+}
+
+@keyframes speedLine {
+    0% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateX(-200px);
+        opacity: 0;
+    }
+}
+
+/* Loading Text */
+.loading-text {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: white;
+    font-family: 'Orbitron', 'Roboto', 'Arial', sans-serif;
+    z-index: 1001;
+}
+
+.loading-text h2 {
+    font-size: 4.5rem;
+    font-weight: 900;
+    margin: 0 0 20px 0;
+    background: linear-gradient(45deg, #00f5ff, #ffa502, #ff6348, #ff3742);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 
+        0 0 20px rgba(0, 245, 255, 0.6),
+        0 0 40px rgba(255, 165, 2, 0.4),
+        0 0 60px rgba(255, 99, 72, 0.3);
+    animation: futuristicTextGlow 3s ease-in-out infinite alternate;
+    letter-spacing: 8px;
+    position: relative;
+}
+
+/* Add futuristic text effects */
+.loading-text h2:before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -10px;
+    right: -10px;
+    bottom: -5px;
+    background: linear-gradient(45deg, transparent, rgba(0, 245, 255, 0.1), transparent);
+    border-radius: 10px;
+    animation: scanLine 2s linear infinite;
+    z-index: -1;
+}
+
+.loading-text h2:after {
+    content: 'SERVICE POINT';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #00f5ff, #ffa502, #ff6348);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.3;
+    animation: hologramFlicker 4s ease-in-out infinite;
+    z-index: -1;
+}
+
+.loading-text p {
+    font-size: 1.4rem;
+    margin: 0 0 30px 0;
+    opacity: 0.95;
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-shadow: 0 0 15px rgba(255,255,255,0.3);
+    animation: subtitlePulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes futuristicTextGlow {
+    0% { 
+        text-shadow: 
+            0 0 20px rgba(0, 245, 255, 0.6),
+            0 0 40px rgba(255, 165, 2, 0.4),
+            0 0 60px rgba(255, 99, 72, 0.3);
+        transform: scale(1);
+    }
+    100% { 
+        text-shadow: 
+            0 0 30px rgba(0, 245, 255, 0.9),
+            0 0 60px rgba(255, 165, 2, 0.7),
+            0 0 90px rgba(255, 99, 72, 0.5),
+            0 0 120px rgba(255, 255, 255, 0.2);
+        transform: scale(1.02);
+    }
+}
+
+@keyframes scanLine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+@keyframes hologramFlicker {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.1; }
+}
+
+@keyframes subtitlePulse {
+    0% { 
+        opacity: 0.95;
+        text-shadow: 0 0 15px rgba(255,255,255,0.3);
+    }
+    100% { 
+        opacity: 1;
+        text-shadow: 0 0 25px rgba(255,255,255,0.5);
+    }
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 400px;
+    height: 8px;
+    background: rgba(31, 41, 55, 0.8);
+    border: 1px solid rgba(0, 245, 255, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 0 auto 20px auto;
+    box-shadow: 
+        inset 0 0 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(0, 245, 255, 0.2);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00f5ff, #ffa502, #ff6348);
+    border-radius: 20px;
+    width: 0%;
+    animation: progressFill 3s ease-out forwards;
+    box-shadow: 
+        0 0 15px rgba(0, 245, 255, 0.6),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.progress-fill:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50px;
+    width: 50px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: progressShine 2s ease-in-out infinite;
+}
+
+@keyframes progressFill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+@keyframes progressShine {
+    0% { transform: translateX(-100px); }
+    100% { transform: translateX(450px); }
+}
+
+.loading-percentage {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #00f5ff;
+    text-shadow: 
+        0 0 10px rgba(0, 245, 255, 0.8),
+        0 0 20px rgba(0, 245, 255, 0.4);
+    letter-spacing: 2px;
+    animation: percentageGlow 1s ease-in-out infinite alternate;
+}
+
+@keyframes percentageGlow {
+    0% { 
+        text-shadow: 
+            0 0 10px rgba(0, 245, 255, 0.8),
+            0 0 20px rgba(0, 245, 255, 0.4);
+    }
+    100% { 
+        text-shadow: 
+            0 0 15px rgba(0, 245, 255, 1),
+            0 0 30px rgba(0, 245, 255, 0.6),
+            0 0 45px rgba(255, 165, 2, 0.3);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .superbike-container {
+        bottom: 180px;
+    }
+    
+    .superbike {
+        width: 100px;
+        height: 50px;
+        transform: scale(0.8);
+    }
+    
+    .loading-text {
+        top: 12%;
+    }
+    
+    .loading-text h2 {
+        font-size: 3rem;
+        letter-spacing: 4px;
+    }
+    
+    .loading-text p {
+        font-size: 1.2rem;
+        letter-spacing: 1px;
+    }
+    
+    .progress-bar {
+        width: 320px;
+    }
+    
+    .loading-percentage {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .superbike {
+        transform: scale(0.6);
+    }
+    
+    .loading-text {
+        top: 10%;
+    }
+    
+    .loading-text h2 {
+        font-size: 2.2rem;
+        letter-spacing: 2px;
+    }
+    
+    .loading-text p {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .progress-bar {
+        width: 280px;
+    }
+    
+    .loading-percentage {
+        font-size: 1.1rem;
+    }
+}
+
+/* Hide animation on load complete */
+.superbike-loader.fade-out {
+    animation: fadeOutLoader 1s ease-out forwards;
+}
+
+@keyframes fadeOutLoader {
+    0% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% { 
+        opacity: 0;
+        transform: scale(1.1);
+    }
+}

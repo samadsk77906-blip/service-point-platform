@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Garage Registration - Service Point</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container" style="max-width: 900px;">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <i class="fas fa-car-side"></i>
+                    <span>Service Point</span>
+                </div>
+                <h2>Quick Garage Registration</h2>
+                <p>Choose your garage from the list below to register quickly</p>
+            </div>
+
+            <div id="loading" class="loading-container">
+                <i class="fas fa-spinner fa-spin"></i> Loading available garages...
+            </div>
+
+            <div id="garage-list" class="garage-list hidden">
+                <!-- Garage cards will be populated here -->
+            </div>
+
+            <div id="no-garages" class="no-data hidden">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>No Unregistered Garages Found</h3>
+                <p>All garages have been registered or no garages are available.</p>
+            </div>
+
+            <div class="auth-footer">
+                <p><a href="garage-login.html">Already registered? Login here</a></p>
+                <p><a href="garage-register.html">Manual registration</a> | <a href="index.html">← Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="register-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Register Garage</h3>
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="quick-register-form" class="auth-form">
+                    <input type="hidden" id="selected-email">
+                    <input type="hidden" id="selected-garage-id">
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-warehouse"></i> Garage Details</label>
+                        <div class="garage-info" id="garage-info">
+                            <!-- Garage info will be populated here -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            Create Password
+                        </label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                placeholder="Create a secure password"
+                                minlength="6"
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword('password', 'password-eye')">
+                                <i class="fas fa-eye" id="password-eye"></i>
+                            </button>
+                        </div>
+                        <small class="error-message" id="password-error"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            <i class="fas fa-lock"></i>
+                            Confirm Password
+                        </label>
+                        <div class="password-input">
+                            <input 
+                                type="password" 
+                                id="confirmPassword" 
+                                name="confirmPassword" 
+                                required 
+                                placeholder="Confirm your password"
+                                minlength="6"
+                            >
+                            <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'confirm-password-eye')">
+                                <i class="fas fa-eye" id="confirm-password-eye"></i>
+                            </button>
+                        </div>
+                        <small class="error-message" id="confirmPassword-error"></small>
+                    </div>
+
+                    <button type="submit" class="auth-button" id="register-button">
+                        <i class="fas fa-user-plus"></i>
+                        <span class="button-text">Complete Registration</span>
+                        <span class="loading-spinner hidden">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </span>
+                    </button>
+
+                    <div class="form-error" id="form-error"></div>
+                    <div class="form-success" id="form-success"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .garage-list {
+            margin: 20px 0;
+        }
+        
+        .garage-card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .garage-card:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .garage-card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .garage-name {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .garage-id {
+            background: #6366f1;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+        
+        .garage-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .detail-item i {
+            width: 16px;
+            color: #6366f1;
+        }
+        
+        .register-btn {
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        
+        .register-btn:hover {
+            background: #15803d;
+        }
+        
+        .garage-info {
+            background: #f0f9ff;
+            border: 1px solid #0ea5e9;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.hidden {
+            display: none;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .loading-container {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-data {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-data i {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #fbbf24;
+        }
+        
+        .password-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 14px;
+        }
+    </style>
+
+    <script>
+        const API_BASE_URL = window.location.origin + '/api';
+        let availableGarages = [];
+
+        // Load available garages (not registered yet)
+        async function loadAvailableGarages() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/garages?limit=100`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Filter only unregistered garages
+                    availableGarages = data.data.garages.filter(garage => !garage.isRegistered);
+                    displayGarages();
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error loading garages:', error);
+                document.getElementById('loading').innerHTML = 
+                    '<i class="fas fa-exclamation-triangle"></i> Error loading garages';
+            }
+        }
+
+        function displayGarages() {
+            const loadingEl = document.getElementById('loading');
+            const listEl = document.getElementById('garage-list');
+            const noDataEl = document.getElementById('no-garages');
+
+            loadingEl.classList.add('hidden');
+
+            if (availableGarages.length === 0) {
+                noDataEl.classList.remove('hidden');
+                return;
+            }
+
+            listEl.classList.remove('hidden');
+            listEl.innerHTML = availableGarages.map(garage => `
+                <div class="garage-card" onclick="selectGarage('${garage._id}')">
+                    <div class="garage-card-header">
+                        <div class="garage-name">${garage.garageName}</div>
+                        <div class="garage-id">${garage.garageId}</div>
+                    </div>
+                    <div class="garage-details">
+                        <div class="detail-item">
+                            <i class="fas fa-user"></i>
+                            <span>${garage.ownerName}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>${garage.email}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span>${garage.contactNumber}</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${garage.location}</span>
+                        </div>
+                    </div>
+                    <button class="register-btn" onclick="event.stopPropagation(); selectGarage('${garage._id}')">
+                        <i class="fas fa-user-plus"></i> Register This Garage
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function selectGarage(garageId) {
+            const garage = availableGarages.find(g => g._id === garageId);
+            if (!garage) return;
+
+            document.getElementById('selected-email').value = garage.email;
+            document.getElementById('selected-garage-id').value = garage.garageId;
+            document.getElementById('modal-title').textContent = `Register ${garage.garageName}`;
+            document.getElementById('garage-info').innerHTML = `
+                <strong>${garage.garageName} (${garage.garageId})</strong><br>
+                Owner: ${garage.ownerName}<br>
+                Email: ${garage.email}<br>
+                Location: ${garage.location}
+            `;
+
+            document.getElementById('register-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('register-modal').classList.add('hidden');
+            document.getElementById('quick-register-form').reset();
+            clearErrors();
+        }
+
+        function togglePassword(inputId, eyeId) {
+            const passwordInput = document.getElementById(inputId);
+            const passwordEye = document.getElementById(eyeId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                passwordEye.className = 'fas fa-eye-slash';
+            } else {
+                passwordInput.type = 'password';
+                passwordEye.className = 'fas fa-eye';
+            }
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => el.textContent = '');
+            document.getElementById('form-error').textContent = '';
+            document.getElementById('form-success').textContent = '';
+        }
+
+        function validatePasswords() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmError = document.getElementById('confirmPassword-error');
+
+            if (password !== confirmPassword) {
+                confirmError.textContent = 'Passwords do not match';
+                return false;
+            } else {
+                confirmError.textContent = '';
+                return true;
+            }
+        }
+
+        function setLoading(loading) {
+            const button = document.getElementById('register-button');
+            const buttonText = button.querySelector('.button-text');
+            const spinner = button.querySelector('.loading-spinner');
+            
+            button.disabled = loading;
+            buttonText.style.display = loading ? 'none' : 'inline';
+            spinner.classList.toggle('hidden', !loading);
+        }
+
+        // Handle registration form
+        document.getElementById('quick-register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+
+            if (!validatePasswords()) return;
+
+            setLoading(true);
+
+            const registerData = {
+                email: document.getElementById('selected-email').value,
+                garageId: document.getElementById('selected-garage-id').value,
+                password: document.getElementById('password').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/garage/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(registerData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('form-success').textContent = 
+                        '✅ Registration successful! Redirecting to login...';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'garage-login.html';
+                    }, 2000);
+                } else {
+                    document.getElementById('form-error').textContent = 
+                        data.message || '❌ Registration failed. Please try again.';
+                }
+            } catch (error) {
+                document.getElementById('form-error').textContent = 
+                    '❌ Network error. Please try again.';
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Real-time password validation
+        document.getElementById('confirmPassword').addEventListener('input', validatePasswords);
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadAvailableGarages);
+    </script>
+</body>
+</html>

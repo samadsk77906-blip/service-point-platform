@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Point - Vehicle Assistance Platform</title>
+    <meta name="description" content="Find nearby garages, book vehicle services, and get expert assistance for your vehicle needs.">   
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/location-search.css">
+    <link rel="stylesheet" href="css/garage-improvements.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/superbike-animation.css">
+    
+    <!-- Google Fonts for futuristic text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Maps API will be loaded dynamically with proper error handling -->
+</head>
+<body class="loading">
+    <!-- Superbike Stunt Animation Loading Screen -->
+    <div id="superbike-loader" class="superbike-loader">
+        <div class="animation-container">
+            <!-- Road and Background -->
+            <div class="road-container">
+                <div class="road"></div>
+                <div class="road-lines"></div>
+            </div>
+            
+            <!-- City Skyline -->
+            <div class="skyline">
+                <div class="building" style="height: 80px; left: 5%;"></div>
+                <div class="building" style="height: 120px; left: 15%;"></div>
+                <div class="building" style="height: 60px; left: 25%;"></div>
+                <div class="building" style="height: 140px; left: 35%;"></div>
+                <div class="building" style="height: 90px; left: 45%;"></div>
+                <div class="building" style="height: 110px; left: 55%;"></div>
+                <div class="building" style="height: 70px; left: 65%;"></div>
+                <div class="building" style="height: 130px; left: 75%;"></div>
+                <div class="building" style="height: 100px; left: 85%;"></div>
+                <div class="building" style="height: 85px; left: 95%;"></div>
+            </div>
+            
+            <!-- Superbike performing stunt -->
+            <div class="superbike-container">
+                <div class="superbike">
+                    <!-- Bike Body -->
+                    <div class="bike-body">
+                        <div class="bike-frame"></div>
+                        <div class="bike-seat"></div>
+                        <div class="bike-engine"></div>
+                        <div class="bike-exhaust">
+                            <div class="exhaust-flame"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Wheels -->
+                    <div class="wheel front-wheel">
+                        <div class="rim"></div>
+                        <div class="spoke"></div>
+                        <div class="spoke" style="transform: rotate(60deg);"></div>
+                        <div class="spoke" style="transform: rotate(120deg);"></div>
+                    </div>
+                    <div class="wheel rear-wheel">
+                        <div class="rim"></div>
+                        <div class="spoke"></div>
+                        <div class="spoke" style="transform: rotate(60deg);"></div>
+                        <div class="spoke" style="transform: rotate(120deg);"></div>
+                    </div>
+                    
+                    <!-- Rider -->
+                    <div class="rider">
+                        <div class="helmet"></div>
+                        <div class="body"></div>
+                        <div class="arms"></div>
+                    </div>
+                </div>
+                
+                <!-- Particle Effects -->
+                <div class="particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+                
+                <!-- Speed Lines -->
+                <div class="speed-lines">
+                    <div class="speed-line"></div>
+                    <div class="speed-line"></div>
+                    <div class="speed-line"></div>
+                    <div class="speed-line"></div>
+                    <div class="speed-line"></div>
+                </div>
+            </div>
+            
+            <!-- Loading Text -->
+            <div class="loading-text">
+                <h2>SERVICE POINT</h2>
+                <p>Revving up your experience...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="loading-percentage">0%</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fallback Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-car-side"></i>
+                <span>Service Point</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="track-booking.html" class="nav-link">Track Booking</a>
+                <div class="nav-dropdown">
+                    <button class="nav-dropdown-btn">
+                        <i class="fas fa-user"></i> Login
+                    </button>
+                    <div class="nav-dropdown-content">
+                        <a href="admin-login.html">Admin Login</a>
+                        <a href="garage-login.html">Garage Login</a>
+                    </div>
+                </div>
+            </div>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Find <span class="text-accent">Expert</span> Vehicle Services
+                    <br>Near You
+                </h1>
+                <p class="hero-subtitle">
+                    Connect with trusted garages, book services instantly, and get your vehicle 
+                    back on the road with professional assistance.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollToSection('garage-search')">
+                        <i class="fas fa-search"></i> Find Garages
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollToSection('services')">
+                        <i class="fas fa-tools"></i> Our Services
+                    </button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="hero-graphic">
+                    <i class="fas fa-car-side"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Garage Search Section -->
+    <section id="garage-search" class="garage-search">
+        <div class="container">
+            <div class="section-header">
+                <h2>Find Garages Near You</h2>
+                <p>Search by location or use GPS to find nearby service centers</p>
+            </div>
+
+            <div class="search-container">
+                <!-- Location Filters -->
+                <div class="search-filters">
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="country-select">Country</label>
+                            <select id="country-select" class="filter-select">
+                                <option value="">Select Country</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="state-select">State</label>
+                            <select id="state-select" class="filter-select" disabled>
+                                <option value="">Select State</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="city-select">City</label>
+                            <select id="city-select" class="filter-select" disabled>
+                                <option value="">Select City</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="district-select">District</label>
+                            <select id="district-select" class="filter-select" disabled>
+                                <option value="">Select District</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="service-filter">Service Needed</label>
+                            <select id="service-filter" class="filter-select">
+                                <option value="">All Services</option>
+                                <option value="Towing">🚗 Towing</option>
+                                <option value="Oil Change">🛢 Oil Change</option>
+                                <option value="Battery Change">🔋 Battery Change</option>
+                                <option value="Servicing">🔧 Servicing</option>
+                                <option value="Inspection">🔍 Inspection</option>
+                                <option value="Tire Repair">🛞 Tire Repair</option>
+                                <option value="Engine Repair">⚙️ Engine Repair</option>
+                                <option value="Brake Service">🛑 Brake Service</option>
+                            </select>
+                        </div>
+                        <div class="filter-actions">
+                            <button id="gps-btn" class="btn btn-gps">
+                                <i class="fas fa-location-dot"></i> Use GPS
+                            </button>
+                            <button id="search-btn" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <div class="search-results">
+                    <div class="results-header">
+                        <h3>Available Garages</h3>
+                        <div class="view-toggle">
+                            <button id="list-view-btn" class="view-btn active">
+                                <i class="fas fa-list"></i> List
+                            </button>
+                            <button id="map-view-btn" class="view-btn">
+                                <i class="fas fa-map"></i> Map
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- List View -->
+                    <div id="list-view" class="results-list">
+                        <div id="garage-cards" class="garage-grid">
+                            <!-- Garage cards will be populated by JavaScript -->
+                        </div>
+                        <div id="no-results" class="no-results hidden">
+                            <i class="fas fa-search"></i>
+                            <h3>No Garages Found</h3>
+                            <p>Try adjusting your search criteria or location</p>
+                        </div>
+                    </div>
+
+                    <!-- Map View -->
+                    <div id="map-view" class="results-map hidden">
+                        <div id="google-map" class="map-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Services</h2>
+                <p>Professional vehicle services at your convenience</p>
+            </div>
+
+            <div class="services-grid">
+                <div class="service-card" data-service="Towing">
+                    <div class="service-icon">
+                        <i class="fas fa-truck-pickup"></i>
+                    </div>
+                    <h3>🚗 Towing</h3>
+                    <p>24/7 emergency towing services to get your vehicle to safety</p>
+                    <button class="btn btn-outline">Book Now</button>
+                </div>
+
+                <div class="service-card" data-service="Oil Change">
+                    <div class="service-icon">
+                        <i class="fas fa-oil-can"></i>
+                    </div>
+                    <h3>🛢 Oil Change</h3>
+                    <p>Regular oil changes to keep your engine running smoothly</p>
+                    <button class="btn btn-outline">Book Now</button>
+                </div>
+
+                <div class="service-card" data-service="Battery Change">
+                    <div class="service-icon">
+                        <i class="fas fa-car-battery"></i>
+                    </div>
+                    <h3>🔋 Battery Change</h3>
+                    <p>Quick battery replacement and testing services</p>
+                    <button class="btn btn-outline">Book Now</button>
+                </div>
+
+                <div class="service-card" data-service="Servicing">
+                    <div class="service-icon">
+                        <i class="fas fa-wrench"></i>
+                    </div>
+                    <h3>🔧 Servicing</h3>
+                    <p>Complete vehicle maintenance and inspection services</p>
+                    <button class="btn btn-outline">Book Now</button>
+                </div>
+
+                <div class="service-card" data-service="Inspection">
+                    <div class="service-icon">
+                        <i class="fas fa-magnifying-glass"></i>
+                    </div>
+                    <h3>🔍 Inspection</h3>
+                    <p>Thorough vehicle inspections for safety and compliance</p>
+                    <button class="btn btn-outline">Book Now</button>
+                </div>
+
+                <div class="service-card" data-service="Tire Repair">
+                    <div class="service-icon">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <h3>🛞 Tire Repair</h3>
+                    <p>Professional tire repair, replacement, and balancing</p>
+                    <button class="btn btn-outline">Book Now</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About Service Point</h2>
+                    <p>
+                        Service Point is your trusted platform for finding reliable vehicle assistance services. 
+                        We connect vehicle owners with certified garages and service providers, ensuring quality 
+                        service and transparent pricing.
+                    </p>
+                    <div class="about-features">
+                        <div class="feature">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <h4>Trusted Providers</h4>
+                                <p>All garages are verified and rated by real customers</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h4>24/7 Support</h4>
+                                <p>Emergency services available round the clock</p>
+                            </div>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <div>
+                                <h4>Fair Pricing</h4>
+                                <p>Transparent pricing with no hidden charges</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="about-graphic">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Contact & Support</h2>
+                <p>Need help? We're here to assist you</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <i class="fas fa-phone"></i>
+                    <h3>Phone Support</h3>
+                    <p>24/7 customer support hotline</p>
+                    <a href="tel:+1234567890">+1 (234) 567-890</a>
+                </div>
+
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email Support</h3>
+                    <p>Get help via email</p>
+                    <a href="mailto:support@servicepoint.com">support@servicepoint.com</a>
+                </div>
+
+                <div class="contact-card">
+                    <i class="fas fa-question-circle"></i>
+                    <h3>FAQ</h3>
+                    <p>Find answers to common questions</p>
+                    <a href="#faq">View FAQ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-car-side"></i>
+                        <span>Service Point</span>
+                    </div>
+                    <p>Your trusted vehicle assistance platform</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>For Businesses</h3>
+                    <ul>
+                        <li><a href="admin-login.html">Admin Portal</a></li>
+                        <li><a href="garage-login.html">Garage Portal</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Service Point. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Success/Error Toast -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <i id="toast-icon" class="fas fa-check-circle"></i>
+            <span id="toast-message">Message</span>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <!-- Superbike Animation - MUST LOAD FIRST -->
+    <script src="js/superbike-loader.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/components.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/maps.js"></script>
+    <!-- Location Search - MUST LOAD LAST -->
+    <script src="js/location-simple.js"></script>
+</body>
+</html>

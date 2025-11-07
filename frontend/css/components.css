@@ -1,0 +1,561 @@
+/* ===== CARD COMPONENTS ===== */
+.card {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-2xl);
+  transition: box-shadow var(--transition-normal);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-lg);
+}
+
+.card-title {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.card-title i {
+  color: var(--primary-color);
+}
+
+/* ===== GARAGE CARDS ===== */
+.garage-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-md);
+  transition: all var(--transition-normal);
+  border: 2px solid transparent;
+}
+
+.garage-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary-color);
+}
+
+.garage-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-md);
+}
+
+.garage-header h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.garage-rating {
+  text-align: right;
+}
+
+.stars {
+  color: #f59e0b;
+  font-size: var(--font-size-md);
+}
+
+.rating-text {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  display: block;
+  margin-top: var(--space-xs);
+}
+
+.garage-info {
+  margin-bottom: var(--space-lg);
+}
+
+.garage-info p {
+  margin-bottom: var(--space-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.garage-services {
+  margin-bottom: var(--space-lg);
+}
+
+.garage-services strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.service-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.service-tag {
+  background: var(--primary-color);
+  color: white;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+}
+
+.garage-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* ===== BOOKING CARDS ===== */
+.booking-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  box-shadow: var(--shadow-sm);
+  border-left: 4px solid var(--primary-color);
+  margin-bottom: var(--space-md);
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+.booking-header h4 {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.booking-status {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.status-pending { background: #fef3c7; color: #92400e; }
+.status-confirmed { background: #dbeafe; color: #1e40af; }
+.status-progress { background: #fde68a; color: #92400e; }
+.status-completed { background: #d1fae5; color: #065f46; }
+.status-cancelled { background: #fee2e2; color: #991b1b; }
+
+.booking-info p {
+  margin-bottom: var(--space-xs);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.booking-actions {
+  margin-top: var(--space-md);
+}
+
+/* ===== FORMS ===== */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: var(--space-md);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-md);
+  transition: all var(--transition-fast);
+  background: white;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group input:invalid,
+.form-group select:invalid,
+.form-group textarea:invalid {
+  border-color: var(--error-color);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group .error {
+  color: var(--error-color);
+  font-size: var(--font-size-xs);
+  margin-top: var(--space-xs);
+  min-height: 1.2em;
+}
+
+.form-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: flex-end;
+  margin-top: var(--space-lg);
+}
+
+/* ===== BOOKING PAGE LAYOUT ===== */
+.booking-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-2xl);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.booking-form {
+  max-width: none;
+}
+
+.booking-aside {
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.selected-garage.empty {
+  color: var(--text-secondary);
+  font-style: italic;
+  padding: var(--space-lg);
+  text-align: center;
+  border: 2px dashed var(--border-light);
+  border-radius: var(--radius-md);
+}
+
+.selected-garage-card h4 {
+  font-size: var(--font-size-lg);
+  color: var(--primary-color);
+  margin-bottom: var(--space-sm);
+}
+
+.selected-garage-card p {
+  margin-bottom: var(--space-xs);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.filter-mini {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.filter-mini-input {
+  padding: var(--space-sm);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-sm);
+}
+
+.filter-mini-input:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-light);
+  cursor: not-allowed;
+}
+
+/* ===== MODALS ===== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-xl);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-header h2 {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: var(--font-size-2xl);
+  cursor: pointer;
+  color: var(--text-secondary);
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: var(--space-xl);
+}
+
+.garage-detail-section {
+  margin-bottom: var(--space-xl);
+}
+
+.garage-detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.garage-detail-section h4 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: var(--space-md);
+  border-bottom: 2px solid var(--border-light);
+  padding-bottom: var(--space-sm);
+}
+
+.garage-detail-section p {
+  margin-bottom: var(--space-xs);
+  color: var(--text-secondary);
+}
+
+/* ===== TOAST NOTIFICATIONS ===== */
+.toast {
+  position: fixed;
+  top: 100px;
+  right: var(--space-lg);
+  z-index: 10001;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(100%);
+  transition: all var(--transition-normal);
+}
+
+.toast.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.toast-content {
+  background: var(--success-color);
+  color: white;
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  min-width: 300px;
+}
+
+.toast.error .toast-content {
+  background: var(--error-color);
+}
+
+.toast-content i {
+  font-size: var(--font-size-lg);
+}
+
+/* ===== DASHBOARD COMPONENTS ===== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--space-xl);
+  margin-bottom: var(--space-2xl);
+}
+
+.stat-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+  border-left: 4px solid var(--primary-color);
+}
+
+.stat-card.success {
+  border-left-color: var(--success-color);
+}
+
+.stat-card.warning {
+  border-left-color: var(--warning-color);
+}
+
+.stat-card.error {
+  border-left-color: var(--error-color);
+}
+
+.stat-number {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.stat-label {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.data-table {
+  background: white;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-md);
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.data-table th {
+  background: var(--bg-secondary);
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.data-table td {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.data-table tr:hover {
+  background: var(--bg-secondary);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .booking-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+  
+  .booking-aside {
+    position: static;
+    order: -1;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-actions {
+    justify-content: stretch;
+  }
+  
+  .form-actions .btn {
+    flex: 1;
+  }
+  
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .garage-actions {
+    flex-direction: column;
+  }
+  
+  .garage-actions .btn {
+    flex: 1;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: var(--space-md);
+  }
+  
+  .modal-header,
+  .modal-body {
+    padding: var(--space-lg);
+  }
+  
+  .toast {
+    right: var(--space-md);
+    left: var(--space-md);
+  }
+  
+  .toast-content {
+    min-width: auto;
+  }
+}

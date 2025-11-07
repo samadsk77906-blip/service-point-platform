@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Service Point</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .location-btn {
+            margin-top: 10px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .location-btn .btn-text {
+            transition: opacity 0.3s ease;
+        }
+        
+        .location-btn .btn-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+        }
+        
+        .location-btn.loading .btn-text {
+            opacity: 0;
+        }
+        
+        .location-btn.loading .btn-loading {
+            opacity: 1;
+        }
+        
+        .help-text {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: #6b7280;
+            font-style: italic;
+        }
+        
+        .help-text i {
+            margin-right: 5px;
+            color: #3b82f6;
+        }
+        
+        .coordinate-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .location-success {
+            background: #d1fae5;
+            color: #047857;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .location-error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .coordinate-group {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-auth">
+        <div class="dashboard-logo">
+            <i class="fas fa-car-side"></i>
+            <span>Service Point - Admin</span>
+        </div>
+        <div class="user-info">
+            <div class="user-avatar" id="user-avatar">A</div>
+            <div class="user-details">
+                <div class="user-name" id="user-name">Loading...</div>
+                <div class="user-role" id="user-role">Admin</div>
+            </div>
+            <button class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Main Content -->
+        <div class="dashboard-content">
+            <!-- Stats Overview -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-garages">0</h3>
+                        <p>Total Garages</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-bookings">0</h3>
+                        <p>Total Bookings</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="pending-bookings">0</h3>
+                        <p>Pending Bookings</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="completed-bookings">0</h3>
+                        <p>Completed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Garage Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>Garage Management</h2>
+                    <button class="btn btn-primary" onclick="toggleAddGarageForm()">
+                        <i class="fas fa-plus"></i> Add Garage
+                    </button>
+                </div>
+
+                <!-- Add Garage Form -->
+                <div id="add-garage-form" class="form-container hidden">
+                    <form id="garage-form" class="garage-form">
+                        <div class="form-grid two-columns">
+                            <div class="form-group">
+                                <label for="garageName">
+                                    <i class="fas fa-warehouse"></i>
+                                    Garage Name
+                                </label>
+                                <input type="text" id="garageName" name="garageName" required placeholder="Enter garage name">
+                                <small class="error-message" id="garageName-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ownerName">
+                                    <i class="fas fa-user"></i>
+                                    Owner Name
+                                </label>
+                                <input type="text" id="ownerName" name="ownerName" required placeholder="Enter owner name">
+                                <small class="error-message" id="ownerName-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">
+                                    <i class="fas fa-envelope"></i>
+                                    Owner Email
+                                </label>
+                                <input type="email" id="email" name="email" required placeholder="Enter email address">
+                                <small class="error-message" id="email-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactNumber">
+                                    <i class="fas fa-phone"></i>
+                                    Contact Number
+                                </label>
+                                <input type="tel" id="contactNumber" name="contactNumber" required placeholder="Enter contact number">
+                                <small class="error-message" id="contactNumber-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="garageId">
+                                    <i class="fas fa-id-card"></i>
+                                    Garage ID (Optional)
+                                </label>
+                                <input type="text" id="garageId" name="garageId" placeholder="Auto-generated if empty">
+                                <small class="error-message" id="garageId-error"></small>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <label for="location">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Location
+                                </label>
+                                <input type="text" id="location" name="location" required placeholder="Enter garage location">
+                                <small class="error-message" id="location-error"></small>
+                            </div>
+
+                            <div class="coordinate-group full-width">
+                                <div class="form-group">
+                                    <label for="latitude">
+                                        <i class="fas fa-crosshairs"></i>
+                                        Latitude
+                                    </label>
+                                    <input type="number" id="latitude" name="latitude" step="any" placeholder="e.g., 19.0760" required>
+                                    <small class="error-message" id="latitude-error"></small>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="longitude">
+                                        <i class="fas fa-crosshairs"></i>
+                                        Longitude
+                                    </label>
+                                    <input type="number" id="longitude" name="longitude" step="any" placeholder="e.g., 72.8777" required>
+                                    <small class="error-message" id="longitude-error"></small>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width">
+                                <button type="button" id="get-current-location-btn" class="btn btn-secondary location-btn">
+                                    <i class="fas fa-location-dot"></i>
+                                    <span class="btn-text">Get Current GPS Location</span>
+                                    <span class="btn-loading hidden">
+                                        <i class="fas fa-spinner fa-spin"></i> Getting location...
+                                    </span>
+                                </button>
+                                <small class="help-text">
+                                    <i class="fas fa-info-circle"></i>
+                                    Click to automatically fill latitude and longitude using your current GPS location
+                                </small>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="toggleAddGarageForm()">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submit-garage-btn">
+                                <i class="fas fa-save"></i>
+                                <span class="button-text">Save Garage</span>
+                                <span class="loading-spinner hidden">
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
+                        </div>
+
+                        <div class="form-error" id="garage-form-error"></div>
+                        <div class="form-success" id="garage-form-success"></div>
+                        <div id="diagnostic-container"></div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Garage List Section -->
+            <div class="section">
+                <div class="section-header">
+                    <h2>All Garages</h2>
+                    <div class="search-box">
+                        <input type="text" id="garage-search" placeholder="Search garages...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+
+                <div class="garage-list-container">
+                    <div class="loading" id="garages-loading">
+                        <i class="fas fa-spinner fa-spin"></i> Loading garages...
+                    </div>
+                    
+                    <div class="garage-table-container">
+                        <table class="garage-table" id="garage-table">
+                            <thead>
+                                <tr>
+                                    <th>Garage ID</th>
+                                    <th>Garage Name</th>
+                                    <th>Owner</th>
+                                    <th>Email</th>
+                                    <th>Contact</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="garage-table-body">
+                                <!-- Garage rows will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="no-garages" class="no-data hidden">
+                        <i class="fas fa-warehouse"></i>
+                        <h3>No Garages Found</h3>
+                        <p>Add your first garage to get started</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Garage Modal -->
+    <div id="edit-garage-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Garage</h3>
+                <span class="modal-close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="edit-garage-form" class="garage-form">
+                    <input type="hidden" id="edit-garage-db-id">
+                    <div class="form-grid two-columns">
+                        <div class="form-group">
+                            <label for="edit-garageName">
+                                <i class="fas fa-warehouse"></i>
+                                Garage Name
+                            </label>
+                            <input type="text" id="edit-garageName" name="garageName" required>
+                            <small class="error-message" id="edit-garageName-error"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-ownerName">
+                                <i class="fas fa-user"></i>
+                                Owner Name
+                            </label>
+                            <input type="text" id="edit-ownerName" name="ownerName" required>
+                            <small class="error-message" id="edit-ownerName-error"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-email">
+                                <i class="fas fa-envelope"></i>
+                                Owner Email
+                            </label>
+                            <input type="email" id="edit-email" name="email" required>
+                            <small class="error-message" id="edit-email-error"></small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="edit-contactNumber">
+                                <i class="fas fa-phone"></i>
+                                Contact Number
+                            </label>
+                            <input type="tel" id="edit-contactNumber" name="contactNumber" required>
+                            <small class="error-message" id="edit-contactNumber-error"></small>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="edit-location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Location
+                            </label>
+                            <input type="text" id="edit-location" name="location" required>
+                            <small class="error-message" id="edit-location-error"></small>
+                        </div>
+
+                        <div class="coordinate-group full-width">
+                            <div class="form-group">
+                                <label for="edit-latitude">
+                                    <i class="fas fa-crosshairs"></i>
+                                    Latitude
+                                </label>
+                                <input type="number" id="edit-latitude" name="latitude" step="any" placeholder="e.g., 19.0760" required>
+                                <small class="error-message" id="edit-latitude-error"></small>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="edit-longitude">
+                                    <i class="fas fa-crosshairs"></i>
+                                    Longitude
+                                </label>
+                                <input type="number" id="edit-longitude" name="longitude" step="any" placeholder="e.g., 72.8777" required>
+                                <small class="error-message" id="edit-longitude-error"></small>
+                            </div>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <button type="button" id="edit-get-location-btn" class="btn btn-secondary location-btn">
+                                <i class="fas fa-location-dot"></i>
+                                <span class="btn-text">Update GPS Location</span>
+                                <span class="btn-loading hidden">
+                                    <i class="fas fa-spinner fa-spin"></i> Getting location...
+                                </span>
+                            </button>
+                            <small class="help-text">
+                                <i class="fas fa-info-circle"></i>
+                                Click to update latitude and longitude using current GPS location
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeEditModal()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="update-garage-btn">
+                            <i class="fas fa-save"></i>
+                            <span class="button-text">Update Garage</span>
+                            <span class="loading-spinner hidden">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </span>
+                        </button>
+                    </div>
+
+                    <div class="form-error" id="edit-garage-form-error"></div>
+                    <div class="form-success" id="edit-garage-form-success"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/network-diagnostics.js"></script>
+    <script src="js/admin-dashboard.js"></script>
+</body>
+</html>
